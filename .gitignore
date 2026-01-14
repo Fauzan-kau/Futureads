@@ -1,3 +1,30 @@
+# Dependencies
 node_modules
+
+# Build output
+dist
+dist-ssr
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Claude
 .claude
+
+# Original assets (src/assets is tracked)
 assets
