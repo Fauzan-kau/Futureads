@@ -14,20 +14,20 @@ const capabilities = [
 const About = () => {
   return (
     <Section id="about" padding="large" className="relative">
-      {/* Decorative line */}
-      <div className="absolute left-0 top-0 w-px h-full bg-gray-100" />
+      {/* Decorative line - hidden on mobile */}
+      <div className="hidden md:block absolute left-0 top-0 w-px h-full bg-gray-100" />
 
       <Container>
         <Grid cols={2} gap="large" className="items-start">
-          <div className="sticky top-32">
+          <div className="md:sticky md:top-32">
             <FadeIn>
               <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
                 About Us
               </Text>
-              <Heading as="h2" size="headline" className="mb-8">
+              <Heading as="h2" size="headline" className="mb-6 md:mb-8">
                 We believe in the power of bold ideas
               </Heading>
-              <div className="w-16 h-px bg-black" />
+              <div className="w-16 h-px bg-black mb-8 md:mb-0" />
             </FadeIn>
           </div>
 
@@ -54,10 +54,10 @@ const About = () => {
                 <Text size="caption" color="muted" className="uppercase tracking-wider mb-6">
                   Our Capabilities
                 </Text>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {capabilities.map((item, index) => (
                     <div key={item} className="flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 bg-black rounded-full" />
+                      <div className="w-1.5 h-1.5 bg-black rounded-full flex-shrink-0" />
                       <Text size="body">{item}</Text>
                     </div>
                   ))}
@@ -67,7 +67,7 @@ const About = () => {
           </div>
         </Grid>
 
-        <Divider className="my-20" />
+        <Divider className="my-12 md:my-20" />
 
         {/* Stats with more visual impact */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">

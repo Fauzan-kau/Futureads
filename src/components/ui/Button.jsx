@@ -18,8 +18,8 @@ const Button = ({
 
   const sizes = {
     small: 'px-4 py-2 text-sm',
-    default: 'px-6 py-3 text-base',
-    large: 'px-8 py-4 text-lg',
+    default: 'px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base',
+    large: 'px-6 py-3 md:px-8 md:py-4 text-base md:text-lg',
   }
 
   const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`

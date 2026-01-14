@@ -85,26 +85,26 @@ const Work = () => {
   const featuredCount = featuredWorks.length
 
   return (
-    <Section id="work" padding="large" className="relative">
-      {/* Background text decoration */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[20vw] font-bold text-gray-50 select-none pointer-events-none whitespace-nowrap">
+    <Section id="work" padding="large" className="relative overflow-hidden">
+      {/* Background text decoration - smaller on mobile */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[30vw] md:text-[20vw] font-bold text-gray-50 select-none pointer-events-none whitespace-nowrap">
         WORK
       </div>
 
       <Container className="relative z-10">
         <FadeIn>
-          <div className="mb-20">
-            <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
+          <div className="mb-10 md:mb-20">
+            <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4 md:mb-6">
               Selected Work
             </Text>
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 md:gap-8">
               <div>
                 <Heading as="h2" size="headline" className="mb-4">
                   Campaigns that make an impact
                 </Heading>
                 <div className="w-16 h-px bg-black" />
               </div>
-              <Text color="muted" className="max-w-md">
+              <Text color="muted" className="max-w-md text-sm md:text-base">
                 Click on any project to browse through the creative assets.
                 Each piece tells a story of collaboration and creativity.
               </Text>
@@ -113,7 +113,7 @@ const Work = () => {
         </FadeIn>
 
         {/* Masonry-style grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
           {works.map((work, index) => {
             const isFeatured = work.featured
             const shouldShow = showAll || isFeatured
@@ -137,7 +137,7 @@ const Work = () => {
 
         {!showAll && works.length > featuredCount && (
           <FadeIn>
-            <div className="mt-20 text-center">
+            <div className="mt-10 md:mt-20 text-center">
               <Button variant="secondary" size="large" onClick={() => setShowAll(true)}>
                 View All Projects ({works.length - featuredCount} more)
               </Button>
@@ -147,9 +147,9 @@ const Work = () => {
 
         {/* Testimonial/Quote */}
         <FadeIn>
-          <div className="mt-32 max-w-3xl mx-auto text-center">
-            <div className="text-6xl text-gray-200 mb-6">&ldquo;</div>
-            <Text size="large" className="italic mb-8 leading-relaxed">
+          <div className="mt-16 md:mt-32 max-w-3xl mx-auto text-center px-4">
+            <div className="text-4xl md:text-6xl text-gray-200 mb-4 md:mb-6">&ldquo;</div>
+            <Text size="large" className="italic mb-6 md:mb-8 leading-relaxed text-base md:text-lg">
               Working with FutureAds transformed our brand presence. Their creative
               approach and attention to detail exceeded our expectations.
             </Text>

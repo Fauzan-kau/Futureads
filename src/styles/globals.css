@@ -93,4 +93,42 @@
       transform: translateY(0);
     }
   }
+
+  /* Mobile touch target minimum size */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  .overflow-x-hidden {
+    overflow-x: hidden;
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 640px) {
+  /* Reduce base font size slightly on very small screens */
+  html {
+    font-size: 15px;
+  }
+
+  /* Ensure buttons have adequate touch targets */
+  button,
+  a[href] {
+    min-height: 44px;
+  }
+
+  /* Prevent text from being too small */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Prevent layout shift from scrollbar */
+@media (min-width: 768px) {
+  html {
+    overflow-y: scroll;
+  }
 }

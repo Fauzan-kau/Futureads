@@ -5,12 +5,12 @@ import { FadeIn } from '../animation'
 const Contact = () => {
   return (
     <Section id="contact" padding="large" className="relative">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gray-50" />
+      {/* Background decoration - hidden on mobile */}
+      <div className="hidden md:block absolute top-0 left-0 w-1/3 h-full bg-gray-50" />
 
       <Container className="relative z-10">
         <Grid cols={2} gap="large" className="items-start">
-          <div className="bg-gray-50 p-12 lg:p-16 -ml-6 lg:-ml-12">
+          <div className="bg-gray-50 p-6 md:p-12 lg:p-16 -mx-6 md:mx-0 md:-ml-6 lg:-ml-12">
             <FadeIn>
               <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
                 Get in Touch
@@ -56,19 +56,19 @@ const Contact = () => {
             </FadeIn>
           </div>
 
-          <div className="py-12 lg:py-16">
+          <div className="py-8 md:py-12 lg:py-16">
             <FadeIn delay={100}>
-              <div className="space-y-10">
+              <div className="space-y-8 md:space-y-10">
                 <div className="group">
                   <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                     Email
                   </Text>
                   <a
                     href="mailto:hello@futureads.agency"
-                    className="text-2xl md:text-3xl font-medium hover:text-gray-600 transition-colors duration-300 inline-flex items-center gap-4"
+                    className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium hover:text-gray-600 transition-colors duration-300 inline-flex items-center gap-2 md:gap-4 break-all md:break-normal"
                   >
                     hello@futureads.agency
-                    <span className="w-6 h-px bg-black group-hover:w-10 transition-all duration-300" />
+                    <span className="hidden sm:block w-6 h-px bg-black group-hover:w-10 transition-all duration-300 flex-shrink-0" />
                   </a>
                 </div>
 
@@ -80,10 +80,10 @@ const Contact = () => {
                   </Text>
                   <a
                     href="tel:+919876543210"
-                    className="text-2xl md:text-3xl font-medium hover:text-gray-600 transition-colors duration-300 inline-flex items-center gap-4"
+                    className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium hover:text-gray-600 transition-colors duration-300 inline-flex items-center gap-2 md:gap-4"
                   >
                     +91 98765 43210
-                    <span className="w-6 h-px bg-black group-hover:w-10 transition-all duration-300" />
+                    <span className="hidden sm:block w-6 h-px bg-black group-hover:w-10 transition-all duration-300 flex-shrink-0" />
                   </a>
                 </div>
 
@@ -107,7 +107,7 @@ const Contact = () => {
                   <Text size="caption" color="muted" className="uppercase tracking-wider mb-4">
                     Follow Us
                   </Text>
-                  <div className="flex gap-6">
+                  <div className="flex flex-wrap gap-4 md:gap-6">
                     <a href="#" className="text-gray-600 hover:text-black transition-colors duration-300">
                       Instagram
                     </a>

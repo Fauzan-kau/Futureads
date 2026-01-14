@@ -28,10 +28,10 @@ const principles = [
 const Philosophy = () => {
   return (
     <Section id="philosophy" background="black" padding="large" className="relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-900/50 to-transparent" />
-      <div className="absolute bottom-20 right-20 w-64 h-64 border border-gray-800 rounded-full opacity-30" />
-      <div className="absolute top-40 right-40 w-32 h-32 border border-gray-700 rounded-full opacity-20" />
+      {/* Decorative elements - hidden on mobile */}
+      <div className="hidden md:block absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-900/50 to-transparent" />
+      <div className="hidden md:block absolute bottom-20 right-20 w-64 h-64 border border-gray-800 rounded-full opacity-30" />
+      <div className="hidden md:block absolute top-40 right-40 w-32 h-32 border border-gray-700 rounded-full opacity-20" />
 
       <Container className="relative z-10">
         <Grid cols={2} gap="large" className="items-start">
@@ -65,16 +65,16 @@ const Philosophy = () => {
           <div className="space-y-0">
             {principles.map((principle, index) => (
               <FadeIn key={principle.number} delay={index * 100}>
-                <div className="group py-10 border-b border-gray-800 hover:bg-white/5 transition-colors duration-300 px-6 -mx-6">
-                  <div className="flex items-start gap-8">
-                    <Text size="caption" className="text-gray-600 font-mono mt-1">
+                <div className="group py-6 md:py-10 border-b border-gray-800 hover:bg-white/5 transition-colors duration-300 px-4 md:px-6 -mx-4 md:-mx-6">
+                  <div className="flex items-start gap-4 md:gap-8">
+                    <Text size="caption" className="text-gray-600 font-mono mt-1 flex-shrink-0">
                       {principle.number}
                     </Text>
                     <div>
-                      <Heading as="h3" size="title" className="text-white mb-4 group-hover:translate-x-2 transition-transform duration-300">
+                      <Heading as="h3" size="title" className="text-white mb-2 md:mb-4 group-hover:translate-x-2 transition-transform duration-300">
                         {principle.title}
                       </Heading>
-                      <Text className="text-gray-400 leading-relaxed">
+                      <Text className="text-gray-400 leading-relaxed text-sm md:text-base">
                         {principle.description}
                       </Text>
                     </div>
@@ -87,16 +87,16 @@ const Philosophy = () => {
 
         {/* Bottom CTA */}
         <FadeIn>
-          <div className="mt-24 pt-16 border-t border-gray-800 text-center">
+          <div className="mt-12 md:mt-24 pt-10 md:pt-16 border-t border-gray-800 text-center">
             <Heading as="h3" size="title" className="text-white mb-4">
               Ready to transform your brand?
             </Heading>
-            <Text className="text-gray-400 mb-8">
+            <Text className="text-gray-400 mb-6 md:mb-8">
               Let&apos;s create something extraordinary together.
             </Text>
             <a
               href="#contact"
-              className="inline-flex px-8 py-4 bg-white text-black font-medium border border-white hover:bg-black hover:text-white transition-all duration-300"
+              className="inline-flex px-6 md:px-8 py-3 md:py-4 bg-white text-black font-medium border border-white hover:bg-black hover:text-white transition-all duration-300 text-sm md:text-base"
             >
               Start a Conversation
             </a>

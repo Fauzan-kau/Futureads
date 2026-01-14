@@ -24,13 +24,13 @@ const ServiceCard = ({ service, index }) => {
 
 const Services = () => {
   return (
-    <Section id="services" background="gray" padding="large" className="relative">
-      {/* Decorative elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 border border-gray-200 rounded-full opacity-50" />
-      <div className="absolute bottom-40 left-20 w-24 h-24 border border-gray-300 rounded-full opacity-30" />
+    <Section id="services" background="gray" padding="large" className="relative overflow-hidden">
+      {/* Decorative elements - hidden on mobile */}
+      <div className="hidden md:block absolute top-20 right-20 w-32 h-32 border border-gray-200 rounded-full opacity-50" />
+      <div className="hidden md:block absolute bottom-40 left-20 w-24 h-24 border border-gray-300 rounded-full opacity-30" />
 
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 mb-12 md:mb-20">
           <div className="lg:col-span-5">
             <FadeIn>
               <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
@@ -50,25 +50,25 @@ const Services = () => {
 
           <div className="lg:col-span-7">
             <FadeIn delay={200}>
-              <div className="grid grid-cols-3 gap-8 text-center">
+              <div className="grid grid-cols-3 gap-4 md:gap-8 text-center">
                 <div>
-                  <Heading as="span" size="headline" className="block mb-2">100%</Heading>
-                  <Text size="caption" color="muted">Client Satisfaction</Text>
+                  <Heading as="span" size="headline" className="block mb-1 md:mb-2">100%</Heading>
+                  <Text size="caption" color="muted" className="text-xs md:text-sm">Client Satisfaction</Text>
                 </div>
                 <div>
-                  <Heading as="span" size="headline" className="block mb-2">24/7</Heading>
-                  <Text size="caption" color="muted">Support Available</Text>
+                  <Heading as="span" size="headline" className="block mb-1 md:mb-2">24/7</Heading>
+                  <Text size="caption" color="muted" className="text-xs md:text-sm">Support Available</Text>
                 </div>
                 <div>
-                  <Heading as="span" size="headline" className="block mb-2">Fast</Heading>
-                  <Text size="caption" color="muted">Turnaround Time</Text>
+                  <Heading as="span" size="headline" className="block mb-1 md:mb-2">Fast</Heading>
+                  <Text size="caption" color="muted" className="text-xs md:text-sm">Turnaround Time</Text>
                 </div>
               </div>
             </FadeIn>
           </div>
         </div>
 
-        <Divider className="mb-16" />
+        <Divider className="mb-8 md:mb-16" />
 
         <Grid cols={2} gap="large">
           {services.map((service, index) => (
