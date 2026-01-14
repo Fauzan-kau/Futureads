@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Container } from '../layout'
 import { Logo } from '../ui'
 
 const Header = () => {
@@ -17,9 +16,10 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm">
-      <Container size="wide">
-        <div className="flex items-center justify-between py-3">
-          <Logo size="xlarge" />
+      <div className="mx-auto px-3 sm:px-4 md:px-8 lg:px-12 max-w-7xl">
+        <div className="flex items-center justify-between py-1.5 md:py-3">
+          <Logo size="default" className="md:hidden" />
+          <Logo size="xlarge" className="hidden md:block" />
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-10">
@@ -45,44 +45,41 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+            className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5"
             aria-label="Toggle menu"
           >
-            <span className={`block w-6 h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`block w-6 h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`} />
-            <span className={`block w-6 h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            <span className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
           </button>
         </div>
-      </Container>
+      </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Dropdown */}
       <div
-        className={`md:hidden fixed inset-0 top-[60px] bg-white z-40 transition-all duration-300 ${
-          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        className={`md:hidden absolute left-0 right-0 top-full bg-white border-t border-gray-100 shadow-lg transition-all duration-300 ${
+          isMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
         }`}
       >
-        <Container>
-          <nav className="flex flex-col py-8">
-            {navLinks.map((link, index) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={closeMenu}
-                className="py-4 text-2xl font-medium text-gray-800 hover:text-black border-b border-gray-100 transition-all duration-300"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                {link.label}
-              </a>
-            ))}
+        <nav className="flex flex-col py-2 px-3">
+          {navLinks.map((link) => (
             <a
-              href="#contact"
+              key={link.label}
+              href={link.href}
               onClick={closeMenu}
-              className="mt-8 inline-flex justify-center px-6 py-4 text-lg font-medium bg-black text-white border border-black hover:bg-white hover:text-black transition-all duration-300"
+              className="py-2 text-sm font-medium text-gray-700 hover:text-black transition-colors duration-200"
             >
-              Get in Touch
+              {link.label}
             </a>
-          </nav>
-        </Container>
+          ))}
+          <a
+            href="#contact"
+            onClick={closeMenu}
+            className="mt-2 mb-1 inline-flex justify-center px-4 py-2 text-sm font-medium bg-black text-white hover:bg-gray-800 transition-all duration-200"
+          >
+            Get in Touch
+          </a>
+        </nav>
       </div>
     </header>
   )
