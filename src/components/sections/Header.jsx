@@ -8,7 +8,6 @@ const Header = () => {
     { label: 'About', href: '#about' },
     { label: 'Services', href: '#services' },
     { label: 'Work', href: '#work' },
-    { label: 'Contact', href: '#contact' },
   ]
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
@@ -16,10 +15,14 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm">
-      <div className="mx-auto px-3 sm:px-4 md:px-8 lg:px-12 max-w-7xl">
+      {/* Matches Container's px-6 md:px-8 lg:px-12 so the mark lines up with
+          the page below it. The old badge had transparent padding baked into
+          the asset, which hid the mismatch; the wordmark is cropped tight. */}
+      <div className="mx-auto px-6 md:px-8 lg:px-12 max-w-7xl">
         <div className="flex items-center justify-between py-1.5 md:py-3">
-          <Logo size="default" className="md:hidden" />
-          <Logo size="xlarge" className="hidden md:block" />
+          {/* One instance: the size scale carries its own breakpoint, so the
+              mobile and desktop marks cannot drift apart. */}
+          <Logo className="shrink-0" />
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-10">
@@ -61,7 +64,7 @@ const Header = () => {
           isMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
         }`}
       >
-        <nav className="flex flex-col py-2 px-3">
+        <nav className="flex flex-col py-2 px-6">
           {navLinks.map((link) => (
             <a
               key={link.label}

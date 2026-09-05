@@ -1,5 +1,5 @@
 import { Container, Section, Grid } from '../layout'
-import { Heading, Text, Divider } from '../ui'
+import { Heading, Text } from '../ui'
 import { FadeIn } from '../animation'
 
 const capabilities = [
@@ -50,60 +50,20 @@ const About = () => {
             </FadeIn>
 
             <FadeIn delay={200}>
-              <div className="mb-12">
-                <Text size="caption" color="muted" className="uppercase tracking-wider mb-6">
-                  Our Capabilities
-                </Text>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {capabilities.map((item, index) => (
-                    <div key={item} className="flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 bg-black rounded-full flex-shrink-0" />
-                      <Text size="body">{item}</Text>
-                    </div>
-                  ))}
-                </div>
+              <Text size="caption" color="muted" className="uppercase tracking-wider mb-6">
+                Our Capabilities
+              </Text>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {capabilities.map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-black rounded-full flex-shrink-0" />
+                    <Text size="body">{item}</Text>
+                  </div>
+                ))}
               </div>
             </FadeIn>
           </div>
         </Grid>
-
-        <Divider className="my-12 md:my-20" />
-
-        {/* Stats with more visual impact */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-          <FadeIn delay={0}>
-            <div className="text-center md:text-left p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300">
-              <Heading as="span" size="display" className="block mb-4">
-                50+
-              </Heading>
-              <Text color="muted" className="uppercase tracking-wider text-sm">
-                Projects Delivered
-              </Text>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={100}>
-            <div className="text-center md:text-left p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300">
-              <Heading as="span" size="display" className="block mb-4">
-                25+
-              </Heading>
-              <Text color="muted" className="uppercase tracking-wider text-sm">
-                Happy Clients
-              </Text>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={200}>
-            <div className="text-center md:text-left p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300">
-              <Heading as="span" size="display" className="block mb-4">
-                3+
-              </Heading>
-              <Text color="muted" className="uppercase tracking-wider text-sm">
-                Years Experience
-              </Text>
-            </div>
-          </FadeIn>
-        </div>
       </Container>
     </Section>
   )

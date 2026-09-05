@@ -1,6 +1,7 @@
 import { Container, Section } from '../layout'
 import { Text, Divider, Logo } from '../ui'
 import { FadeIn } from '../animation'
+import { CONTACT } from '../../config/contact'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -13,9 +14,9 @@ const Footer = () => {
   ]
 
   const socials = [
-    { label: 'Instagram', href: '#' },
-    { label: 'LinkedIn', href: '#' },
-    { label: 'Behance', href: '#' },
+    { label: 'Instagram', href: 'https://www.instagram.com/future.ads_?igsi=MWI5aGtmZGFqaWJtZQ==' },
+    { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61585164251234' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@Futureads00' },
   ]
 
   return (
@@ -23,20 +24,16 @@ const Footer = () => {
       <Container>
         <FadeIn>
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 md:gap-12 mb-12 md:mb-16">
-            {/* Brand */}
-            <div className="flex items-start gap-4 md:gap-6">
-              <Logo size="xlarge" />
-              <div>
-                <Text as="span" size="large" weight="bold" className="block mb-1">
-                  FutureAds
-                </Text>
-                <Text size="caption" color="muted" className="mb-2 md:mb-4">
-                  Give your brand a future
-                </Text>
-                <Text size="caption" color="light" className="max-w-xs">
-                  Creative advertising agency crafting bold, impactful campaigns.
-                </Text>
-              </div>
+            {/* Brand. The mark spells the name itself, so it sits above the
+                copy rather than beside a repeat of it. */}
+            <div className="max-w-xs">
+              <Logo size="large" linked={false} className="mb-4 md:mb-5" />
+              <Text size="caption" color="muted" className="mb-2 md:mb-3">
+                Give your brand a future
+              </Text>
+              <Text size="caption" color="light">
+                Creative advertising agency crafting bold, impactful campaigns.
+              </Text>
             </div>
 
             {/* Navigation */}
@@ -83,19 +80,19 @@ const Footer = () => {
                 </Text>
                 <div className="space-y-3">
                   <a
-                    href="mailto:hello@futureads.agency"
+                    href={`mailto:${CONTACT.email}`}
                     className="block text-sm text-gray-600 hover:text-black transition-colors duration-300 break-all sm:break-normal"
                   >
-                    hello@futureads.agency
+                    {CONTACT.email}
                   </a>
                   <a
-                    href="tel:+919876543210"
+                    href={`tel:${CONTACT.phoneE164}`}
                     className="block text-sm text-gray-600 hover:text-black transition-colors duration-300"
                   >
-                    +91 98765 43210
+                    {CONTACT.phone}
                   </a>
                   <Text size="caption" color="muted">
-                    Kerala, India
+                    {CONTACT.location}
                   </Text>
                 </div>
               </div>

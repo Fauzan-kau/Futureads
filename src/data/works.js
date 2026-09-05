@@ -49,7 +49,7 @@ const works = [
   },
   {
     id: 5,
-    client: 'KSRRTC',
+    client: 'KSRTC',
     category: 'Transportation',
     description: 'Public service awareness campaign',
     images: [ksrrtc],

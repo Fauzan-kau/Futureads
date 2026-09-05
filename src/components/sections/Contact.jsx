@@ -1,8 +1,13 @@
+import { useState } from 'react'
 import { Container, Section, Grid } from '../layout'
 import { Heading, Text, Button, Divider } from '../ui'
 import { FadeIn } from '../animation'
+import { InquiryPanel } from '../contact'
+import { CONTACT } from '../../config/contact'
 
 const Contact = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false)
+
   return (
     <Section id="contact" padding="large" className="relative">
       {/* Background decoration - hidden on mobile */}
@@ -64,10 +69,10 @@ const Contact = () => {
                     Email
                   </Text>
                   <a
-                    href="mailto:hello@futureads.agency"
+                    href={`mailto:${CONTACT.email}`}
                     className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium hover:text-gray-600 transition-colors duration-300 inline-flex items-center gap-2 md:gap-4 break-all md:break-normal"
                   >
-                    hello@futureads.agency
+                    {CONTACT.email}
                     <span className="hidden sm:block w-6 h-px bg-black group-hover:w-10 transition-all duration-300 flex-shrink-0" />
                   </a>
                 </div>
@@ -79,10 +84,10 @@ const Contact = () => {
                     Phone
                   </Text>
                   <a
-                    href="tel:+919876543210"
+                    href={`tel:${CONTACT.phoneE164}`}
                     className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium hover:text-gray-600 transition-colors duration-300 inline-flex items-center gap-2 md:gap-4"
                   >
-                    +91 98765 43210
+                    {CONTACT.phone}
                     <span className="hidden sm:block w-6 h-px bg-black group-hover:w-10 transition-all duration-300 flex-shrink-0" />
                   </a>
                 </div>
@@ -121,9 +126,35 @@ const Contact = () => {
                 </div>
 
                 <div className="pt-6">
-                  <Button href="mailto:hello@futureads.agency" variant="primary" size="large">
+                  {/* A disclosure, not a modal: the panel is the trigger's next
+                      DOM sibling, so Tab lands in the first field naturally and
+                      no focus trap is needed. It also cannot be a fixed overlay
+                      here — FadeIn applies an inline transform even at rest,
+                      which would make position:fixed resolve against the grid
+                      column rather than the viewport. */}
+                  <Button
+                    id="inquiry-trigger"
+                    variant="primary"
+                    size="large"
+                    onClick={() => setIsFormOpen((open) => !open)}
+                    aria-expanded={isFormOpen}
+                    aria-controls="inquiry-form"
+                  >
                     Start a Project
                   </Button>
+
+                  {isFormOpen && (
+                    <InquiryPanel
+                      id="inquiry-form"
+                      onClose={() => {
+                        setIsFormOpen(false)
+                        // Button has no forwardRef, so focus returns by id —
+                        // otherwise focus falls to <body> and strands keyboard
+                        // users at the top of the document.
+                        document.getElementById('inquiry-trigger')?.focus()
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </FadeIn>

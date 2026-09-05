@@ -22,7 +22,21 @@ const Hero = () => {
           <FadeIn delay={100}>
             <Heading as="h1" size="display" className="mb-10">
               Give your brand
-              <span className="block">a future</span>
+              <span className="block">
+                a{' '}
+                <span className="relative inline-block whitespace-nowrap">
+                  <span className="relative">future</span>
+                  {/* Marker sweep: wipes a black bar across the word, inverting it to white */}
+                  <span
+                    aria-hidden="true"
+                    className="highlight-wipe absolute inset-x-[-0.1em] inset-y-[-0.08em] bg-black"
+                  >
+                    <span className="absolute left-[0.1em] top-[0.08em] text-white">
+                      future
+                    </span>
+                  </span>
+                </span>
+              </span>
             </Heading>
           </FadeIn>
 

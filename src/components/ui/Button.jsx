@@ -2,12 +2,19 @@ const Button = ({
   children,
   href,
   onClick,
+  // Without an explicit type, a <button> inside a <form> defaults to submit —
+  // which would make Cancel, Copy and Close all submit the inquiry form.
+  type = 'button',
   variant = 'primary',
   size = 'default',
   className = '',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-300 ease-out'
+  // An outline rather than a ring: rings are box-shadows and are stripped in
+  // Windows forced-colors mode, and the primary variant's hover inversion makes
+  // the UA default focus ring ambiguous.
+  const baseStyles =
+    'inline-flex items-center justify-center font-medium transition-all duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
 
   const variants = {
     primary: 'bg-black text-white border border-black hover:bg-white hover:text-black',
@@ -25,15 +32,17 @@ const Button = ({
   const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`
 
   if (href) {
+    // onClick used to be dropped on this branch, so <Button href onClick>
+    // compiled, rendered, and silently never fired.
     return (
-      <a href={href} className={classes} {...props}>
+      <a href={href} onClick={onClick} className={classes} {...props}>
         {children}
       </a>
     )
   }
 
   return (
-    <button onClick={onClick} className={classes} {...props}>
+    <button type={type} onClick={onClick} className={classes} {...props}>
       {children}
     </button>
   )
