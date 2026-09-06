@@ -14,13 +14,17 @@ const Button = ({
   // Windows forced-colors mode, and the primary variant's hover inversion makes
   // the UA default focus ring ambiguous.
   const baseStyles =
-    'inline-flex items-center justify-center font-medium transition-all duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
+    'inline-flex items-center justify-center font-medium transition-all duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2'
 
+  // The ring colour belongs to the variant, not the base: welded into
+  // baseStyles it could not be overridden from className without relying on
+  // stylesheet order, so a Button on a dark surface would get an invisible
+  // black ring. No existing call site changes appearance.
   const variants = {
-    primary: 'bg-black text-white border border-black hover:bg-white hover:text-black',
-    secondary: 'bg-white text-black border border-black hover:bg-black hover:text-white',
-    ghost: 'bg-transparent text-black hover:bg-gray-100',
-    link: 'bg-transparent text-black underline underline-offset-4 hover:text-gray-600',
+    primary: 'bg-black text-white border border-black hover:bg-white hover:text-black focus-visible:outline-black',
+    secondary: 'bg-white text-black border border-black hover:bg-black hover:text-white focus-visible:outline-black',
+    ghost: 'bg-transparent text-black hover:bg-gray-100 focus-visible:outline-black',
+    link: 'bg-transparent text-black underline underline-offset-4 hover:text-gray-600 focus-visible:outline-black',
   }
 
   const sizes = {

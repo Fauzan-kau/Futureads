@@ -3,7 +3,7 @@ import { Container, Section, Grid } from '../layout'
 import { Heading, Text, Button, Divider } from '../ui'
 import { FadeIn } from '../animation'
 import { InquiryPanel } from '../contact'
-import { CONTACT } from '../../config/contact'
+import { CONTACT, SOCIALS } from '../../config/contact'
 
 const Contact = () => {
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -109,16 +109,23 @@ const Contact = () => {
                   <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                     Follow Us
                   </Text>
+                  {/* Was three dead href="#" anchors naming Instagram /
+                      LinkedIn / Behance while the footer named Instagram /
+                      Facebook / YouTube with real URLs — two contradictory
+                      answers to the same question in one eyeful, and the
+                      visible one went nowhere. */}
                   <div className="flex flex-wrap gap-4 md:gap-6">
-                    <a href="#" className="text-gray-600 hover:text-black transition-colors duration-300">
-                      Instagram
-                    </a>
-                    <a href="#" className="text-gray-600 hover:text-black transition-colors duration-300">
-                      LinkedIn
-                    </a>
-                    <a href="#" className="text-gray-600 hover:text-black transition-colors duration-300">
-                      Behance
-                    </a>
+                    {SOCIALS.map((social) => (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-600 hover:text-black transition-colors duration-300"
+                      >
+                        {social.label}
+                      </a>
+                    ))}
                   </div>
                 </div>
 

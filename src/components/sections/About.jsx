@@ -19,7 +19,7 @@ const About = () => {
 
       <Container>
         <Grid cols={2} gap="large" className="items-start">
-          <div className="md:sticky md:top-20">
+          <div className="md:sticky md:top-24">
             <FadeIn>
               <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4">
                 About Us

@@ -12,4 +12,16 @@ export const CONTACT = {
   replyWindow: 'within two working days',
 }
 
+/**
+ * The Contact section and the Footer each carried their own hard-coded list,
+ * and they disagreed: Contact advertised Instagram / LinkedIn / Behance at
+ * href="#", the footer advertised Instagram / Facebook / YouTube with real
+ * URLs. Two contradictory answers to the same question, 200px apart.
+ */
+export const SOCIALS = [
+  { label: 'Instagram', href: 'https://www.instagram.com/future.ads_?igsi=MWI5aGtmZGFqaWJtZQ==' },
+  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61585164251234' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@Futureads00' },
+]
+
 export default CONTACT

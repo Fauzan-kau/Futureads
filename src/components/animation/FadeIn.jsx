@@ -11,19 +11,29 @@ const FadeIn = ({
 }) => {
   const { ref, isInView } = useInView({ threshold })
 
-  const directions = {
-    up: `translate-y-[${distance}px]`,
-    down: `translate-y-[-${distance}px]`,
-    left: `translate-x-[${distance}px]`,
-    right: `translate-x-[-${distance}px]`,
-    none: 'translate-y-0',
-  }
+  // The transition is written as an INLINE style, which no ordinary stylesheet
+  // rule can override — so this is the only place a reduced-motion visitor can
+  // be opted out of the fade-and-rise. Read once at render; the preference does
+  // not change mid-session in practice. Safe because the animated state already
+  // resolves to opacity 1, so content snaps visible rather than stranding at 0.
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  const baseStyles = {
-    opacity: isInView ? 1 : 0,
-    transform: isInView ? 'translate(0, 0)' : getTransform(direction, distance),
-    transition: `opacity ${duration}ms ease-out ${delay}ms, transform ${duration}ms ease-out ${delay}ms`,
-  }
+  const baseStyles = prefersReducedMotion
+    // translate(0, 0) rather than 'none': equally motion-free, but it keeps
+    // FadeIn a containing block for EVERY visitor. Hero, Contact and
+    // InquiryPanel all document structural decisions that assume the inline
+    // transform is always there; 'none' would quietly make that assumption
+    // false for reduced-motion users only — the configuration least likely to
+    // be tested.
+    ? { opacity: 1, transform: 'translate(0, 0)' }
+    : {
+        opacity: isInView ? 1 : 0,
+        transform: isInView ? 'translate(0, 0)' : getTransform(direction, distance),
+        transition: `opacity ${duration}ms ease-out ${delay}ms, transform ${duration}ms ease-out ${delay}ms`,
+      }
 
   return (
     <div ref={ref} style={baseStyles} className={className}>

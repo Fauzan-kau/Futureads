@@ -157,3 +157,19 @@
     overflow-y: scroll;
   }
 }
+
+/* Every header and footer nav click fires an unguarded animated full-page
+   scroll; from the footer, "About" is a multi-thousand-pixel traversal and
+   Back to top is the worst case by design. This is the one motion those two
+   components actually own. .highlight-wipe above is already guarded — the
+   query just was never extended to the scroll behaviour itself.
+   Deliberately NOT the site-wide `* { transition-duration: 0.01ms !important }`
+   sledgehammer: that would nullify every hover affordance in six other
+   sections. Reduced-motion users are served instead by the
+   motion-reduce:transition-none variant on each transition in Header.jsx and
+   Footer.jsx, and by the matchMedia check in FadeIn.jsx. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

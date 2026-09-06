@@ -35,7 +35,7 @@ const Philosophy = () => {
 
       <Container className="relative z-10">
         <Grid cols={2} gap="large" className="items-start">
-          <div className="md:sticky md:top-20">
+          <div className="md:sticky md:top-24">
             <FadeIn>
               <Text size="caption" className="uppercase tracking-[0.3em] mb-4 text-gray-500">
                 Our Philosophy

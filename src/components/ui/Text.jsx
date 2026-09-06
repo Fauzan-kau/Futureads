@@ -16,6 +16,11 @@ const Text = ({
     default: 'text-black',
     muted: 'text-gray-600',
     light: 'text-gray-500',
+    // For dark surfaces. gray-400 is 8.3:1 on black; gray-500 is only 4.43:1
+    // and fails AA there. Overriding the default text-black from className
+    // works today only because Tailwind emits the named greys after `black`
+    // in the resolved palette — an emission-order dependency, not a rule.
+    dim: 'text-gray-400',
     inherit: 'text-inherit',
   }
 
