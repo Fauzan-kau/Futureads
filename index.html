@@ -6,7 +6,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- interactive-widget=resizes-content makes Chrome/Android shrink the layout
+         viewport when the virtual keyboard opens, so the inquiry dialog's sticky
+         action band rides above the keyboard instead of behind it. iOS Safari
+         ignores it, and it has no effect on a page with no focused input. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
     <meta name="description" content="FutureAds - Give your brand a future. A creative advertising agency crafting bold, impactful campaigns." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

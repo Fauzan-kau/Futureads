@@ -36,9 +36,24 @@ const WorkCard = ({ work, index, isNew = false, baseDelay = 0 }) => {
       style={animationStyle}
     >
         <div className="aspect-[4/5] overflow-hidden bg-gray-100 mb-4 relative">
+          {/* decoding="async" is the load-bearing one, and it is a HEADER fix
+              as much as an image one. These are 1.5-4.6 megapixel JPEGs — the
+              three cards that render by default are ~1.2MB and 9.2MP between
+              them — and decoded synchronously they stall the main thread for
+              exactly as long as it takes, in the section you scroll into. That
+              stall is what starved the masthead's repaint and let it slide up
+              mid-scroll. See the note on Header.jsx's <header>.
+              loading="lazy" is safe on every card here: Work is the fourth
+              section, so none of them is ever above the fold.
+              No intrinsic width/height on purpose — the wrapper is
+              aspect-[4/5] with object-cover, so the box is already reserved
+              and there is no CLS to prevent; carrying per-image dimensions in
+              works.js would buy nothing. */}
           <img
             src={work.images[currentImage]}
             alt={`${work.client} - ${work.category}`}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
           />
           {/* Overlay on hover */}

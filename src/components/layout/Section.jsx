@@ -21,9 +21,14 @@ const Section = ({
     black: 'bg-black text-white',
   }
 
-  // The header is fixed with nothing reserving its height, so an anchor jump
-  // parks the section's heading underneath it. Every nav target is a Section
-  // with an id, which makes this the one place the offset has to exist.
+  // The header is sticky, so it still overlays the top of the scrollport, and
+  // an anchor jump would still park the section's heading underneath it: the
+  // browser scrolls the target to the scrollport's top edge, which is precisely
+  // where the bar is sitting. Reserving the header's height in flow — which
+  // sticky now does — fixes overlap during SCROLLING and does nothing for an
+  // anchor jump, so this offset is still required and its values are unchanged.
+  // Every nav target is a Section with an id, which makes this the one place
+  // the offset has to exist.
   // 5rem / 6rem against a 61 / 65 / 81px header (Header's h-16 md:h-20 plus its
   // 1px border-b) leaves 14 / 15 / 15px of clearance at every band. rem is
   // right HERE precisely because the header's height is also rem: both shrink

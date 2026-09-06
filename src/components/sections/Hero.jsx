@@ -4,13 +4,28 @@ import { FadeIn } from '../animation'
 
 const Hero = () => {
   return (
-    <Section padding="none" className="min-h-[100svh] flex items-center relative overflow-hidden">
+    // The header is sticky, so it sits IN FLOW above this section and eats the
+    // top of the first screen. A bare 100svh would therefore run one viewport
+    // PLUS the bar and the hero would no longer end at the fold. 4rem / 5rem
+    // mirror Header.jsx's h-16 md:h-20 and the 1px is its border-b — 61 / 65 /
+    // 81px at the three bands. rem on both sides is the point: they shrink
+    // together at the 15px root globals.css sets below 640px. If the header's
+    // row height ever changes, this changes with it.
+    // svh, not vh: the SMALL viewport is the one that is never clipped by
+    // mobile browser chrome. Same unit and same reason as globals.css's
+    // .inq-layer.
+    <Section padding="none" className="min-h-[calc(100svh_-_4rem_-_1px)] md:min-h-[calc(100svh_-_5rem_-_1px)] flex items-center relative overflow-hidden">
       {/* Decorative elements - hidden on small screens */}
       <div className="hidden md:block absolute top-20 right-0 w-64 lg:w-96 h-64 lg:h-96 border border-gray-100 rounded-full opacity-50" />
       <div className="hidden md:block absolute bottom-20 left-10 w-32 lg:w-64 h-32 lg:h-64 border border-gray-200 rounded-full opacity-30" />
       <div className="hidden sm:block absolute top-1/2 right-1/4 w-2 h-2 bg-black rounded-full" />
       <div className="hidden sm:block absolute top-1/3 right-1/3 w-1 h-1 bg-gray-400 rounded-full" />
 
+      {/* py-20 md:py-24 is now ordinary design padding and free to retune. It
+          used to be the de facto header clearance — the header was fixed with
+          nothing reserving its height, so this padding was the only thing
+          keeping the eyebrow out from under the bar, with nothing saying so.
+          The sticky header reserves its own height now, so that job is gone. */}
       <Container className="py-20 md:py-24 relative z-10">
         <div className="max-w-5xl">
           <FadeIn delay={0}>

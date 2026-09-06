@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Container, Section, Grid } from '../layout'
 import { Heading, Text, Button, Divider } from '../ui'
 import { FadeIn } from '../animation'
@@ -6,7 +6,20 @@ import { InquiryPanel } from '../contact'
 import { CONTACT, SOCIALS } from '../../config/contact'
 
 const Contact = () => {
-  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [modalPhase, setModalPhase] = useState('closed') // 'closed' | 'open' | 'closing'
+
+  const openModal = () => setModalPhase('open')
+  // Guarded, so a second Escape during the exit cannot restart it.
+  const requestClose = useCallback(() => setModalPhase((p) => (p === 'open' ? 'closing' : p)), [])
+  const handleExited = useCallback(() => {
+    setModalPhase('closed')
+    // Unchanged. Button has no forwardRef, so focus returns by id — otherwise
+    // focus falls to <body> and strands keyboard users at the top of the
+    // document. It works here because InquiryModal released `inert` from #root
+    // synchronously, immediately before calling this: .focus() on an element
+    // inside an inert subtree is a silent no-op.
+    document.getElementById('inquiry-trigger')?.focus()
+  }, [])
 
   return (
     <Section id="contact" padding="large" className="relative">
@@ -130,33 +143,40 @@ const Contact = () => {
                 </div>
 
                 <div className="pt-4">
-                  {/* A disclosure, not a modal: the panel is the trigger's next
-                      DOM sibling, so Tab lands in the first field naturally and
-                      no focus trap is needed. It also cannot be a fixed overlay
-                      here — FadeIn applies an inline transform even at rest,
-                      which would make position:fixed resolve against the grid
-                      column rather than the viewport. */}
+                  {/* A modal, and therefore necessarily a PORTAL. FadeIn wraps
+                      this whole column and applies an inline transform even at
+                      rest (FadeIn.jsx keeps it there deliberately, for exactly
+                      the components that depend on it), which makes this div a
+                      containing block: a position:fixed overlay rendered here
+                      would resolve against the grid column, not the viewport, and
+                      land as a small box in the right-hand third of the page.
+                      InquiryModal escapes that with createPortal(document.body).
+                      Do not "simplify" the portal away.
+                      aria-haspopup, not aria-expanded/aria-controls: "expanded"
+                      promises content adjacent in the reading order, and the
+                      content is now a portalled sibling of #root the user can
+                      only reach because focus was moved there. aria-controls
+                      would also dangle for the 99% of the time the dialog is
+                      closed and its id does not exist. */}
                   <Button
                     id="inquiry-trigger"
                     variant="primary"
                     size="large"
-                    onClick={() => setIsFormOpen((open) => !open)}
-                    aria-expanded={isFormOpen}
-                    aria-controls="inquiry-form"
+                    onClick={openModal}
+                    aria-haspopup="dialog"
                   >
                     Start a Project
                   </Button>
 
-                  {isFormOpen && (
+                  {/* Not a bare boolean: `{open && …}` removes the node in the
+                      same commit that flips the flag, so there is no frame in
+                      which an exit animation can run. 'closing' is that frame. */}
+                  {modalPhase !== 'closed' && (
                     <InquiryPanel
                       id="inquiry-form"
-                      onClose={() => {
-                        setIsFormOpen(false)
-                        // Button has no forwardRef, so focus returns by id —
-                        // otherwise focus falls to <body> and strands keyboard
-                        // users at the top of the document.
-                        document.getElementById('inquiry-trigger')?.focus()
-                      }}
+                      phase={modalPhase}
+                      onRequestClose={requestClose}
+                      onExited={handleExited}
                     />
                   )}
                 </div>

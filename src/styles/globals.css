@@ -7,32 +7,51 @@
     box-sizing: border-box;
   }
 
+  /* scroll-behavior: smooth is absent, but NOT because it caused anything.
+     It was removed on the theory that it was behind the "half stuck header" —
+     the masthead riding up and settling half cut off while scrolling down —
+     and a long measurement table used to sit here concluding "fixed, NO smooth
+     -> pinned". That conclusion did not survive contact with the page: the
+     property has been gone ever since, and the bar went on detaching in
+     desktop Chrome. Whatever those samples caught, it was not the cause.
+     The one true thing in that note is the observation it opened with, and it
+     turned out to be the whole diagnosis: header.getBoundingClientRect().top
+     measured exactly 0 across 300+ frames while the wordmark's INK painted
+     hundreds of pixels down. Layout right + pixels wrong is a fixed layer that
+     is not composited, repainted by a main thread too busy to keep up with the
+     live scroll offset — and Work.jsx was decoding ~9 megapixels of JPEG
+     synchronously in the section you scroll into. The fix is at both ends:
+     the masthead is now position:sticky and layer-promoted (see the note on
+     Header.jsx's <header>), and those decodes are now async.
+     So this property is free to come back — it is not forbidden and it is not
+     load-bearing. One coupling to honour first: InquiryModal.jsx restores the
+     page scroll on close with a bare window.scrollTo(), which would start
+     animating the moment this is set, swooping the page under a closing
+     dialog. Give that call an explicit instant behaviour in the same change. */
   html {
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom Scrollbar - Black & White Theme */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-gray-100;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-black rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-800;
-  }
-
-  /* Firefox scrollbar */
-  * {
+  /* Custom scrollbar — black thumb on the #F5F5F5 gray-100 track, unchanged.
+     The STANDARD properties only. The ::-webkit-scrollbar block that used to
+     sit here is deleted rather than trimmed, for two reasons:
+       1. It was already dead. Since Chrome 121, scrollbar-width and
+          scrollbar-color take precedence over the -webkit- pseudo-elements
+          wherever both are specified — and they were, on `*`, which includes
+          the root scroller. So on any current Chrome those rules were styling
+          nothing, which is why removing them changes no pixels.
+       2. Where they are NOT dead, they are a liability for THIS page. Styling
+          ::-webkit-scrollbar builds a custom scrollbar painted by layout
+          objects that have to be moved on every scroll frame — a documented way
+          to take the root scroller off the compositor. A root scroller running
+          on the main thread would let the masthead lag behind the scroll offset
+          no matter how it is pinned; sticky would be no more immune than fixed.
+          It was the only rule in this file capable of causing that.
+     Scoped to html, not `*`. Both properties INHERIT, so this reaches every
+     nested scroller exactly as the universal selector did, without declaring a
+     scrollbar style on ~600 elements that are not scrollers. */
+  html {
     scrollbar-width: thin;
     scrollbar-color: #000000 #f5f5f5;
   }
@@ -158,18 +177,131 @@
   }
 }
 
-/* Every header and footer nav click fires an unguarded animated full-page
-   scroll; from the footer, "About" is a multi-thousand-pixel traversal and
-   Back to top is the worst case by design. This is the one motion those two
-   components actually own. .highlight-wipe above is already guarded — the
-   query just was never extended to the scroll behaviour itself.
-   Deliberately NOT the site-wide `* { transition-duration: 0.01ms !important }`
-   sledgehammer: that would nullify every hover affordance in six other
-   sections. Reduced-motion users are served instead by the
-   motion-reduce:transition-none variant on each transition in Header.jsx and
-   Footer.jsx, and by the matchMedia check in FadeIn.jsx. */
+/* The reduced-motion override for scroll-behavior that used to live here is
+   gone with the property it overrode: scroll-behavior is now absent from the
+   base layer (see the note on html above), so every visitor already gets the
+   instant jump this query used to grant only reduced-motion ones. It comes
+   back together with the property, and it is a real requirement then — not
+   optional politeness — because a full-page nav traversal is the one motion
+   Header.jsx and Footer.jsx actually own.
+   Reduced-motion coverage for everything else is unchanged and still real:
+   .highlight-wipe is guarded above, each transition in Header.jsx and
+   Footer.jsx carries motion-reduce:transition-none, and FadeIn.jsx checks
+   matchMedia directly. Deliberately still NOT the site-wide
+   `* { transition-duration: 0.01ms !important }` sledgehammer — that would
+   nullify every hover affordance in six other sections. */
+
+/* ── Project inquiry dialog ──────────────────────────────────────────────────
+   Plain CSS at the end of the file, deliberately NOT inside @layer utilities:
+   Tailwind v3 tree-shakes custom classes declared in a layer when its extractor
+   does not find the candidate, and every one of these is applied through a
+   template literal. Sitting after the Tailwind output also makes the cascade
+   deterministic instead of emission-order dependent.
+   Applied as CLASSES, never inline styles, so the reduced-motion block below can
+   neutralise them — the same arrangement .highlight-wipe already uses, and
+   deliberately not the `* { transition-duration: .01ms !important }` sledgehammer
+   the note above this block explains at length why it rejects. ---------------- */
+
+/* height, NOT `inset: 0`. `bottom: 0` on a fixed element resolves against iOS
+   Safari's LARGE viewport, so the last ~50-90px of a full-height overlay sits
+   behind the bottom toolbar with nothing to scroll — the panel's bottom edge and
+   its action row land under browser chrome. svh is the SMALL viewport and is
+   therefore never clipped: the same unit and the same reason as Hero.jsx:7's
+   min-h-[100svh]. Two declarations of one property in ONE rule, so an engine
+   that cannot parse svh keeps the vh fallback and there is no emission-order
+   coin flip between two arbitrary Tailwind utilities.
+   The panel inside carries max-h-full, which resolves against THIS box minus its
+   own padding — so the cap tracks p-4/sm:p-6 automatically and there is no
+   hard-coded `calc(100dvh - 2rem)` to drift out of sync with it. */
+.inq-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+}
+
+.inq-scrim-in  { animation: inqScrimIn  200ms ease-out backwards; }
+.inq-scrim-out { animation: inqScrimOut 180ms ease-in  forwards; }
+
+/* No scale, on purpose. The panel's only structural boundary is a 1px black
+   border; a composited scale renders that at 0.98px as an antialiased grey that
+   snaps hard on the final frame, which is the tell that makes an entrance read
+   cheap. A 12px rise is also the site's only existing entrance vocabulary —
+   @keyframes fadeIn above and FadeIn.jsx's distance=10 are the whole set. */
+.inq-panel-in  { animation: inqPanelIn  260ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.inq-panel-out { animation: inqPanelOut 160ms cubic-bezier(0.4, 0, 1, 1) forwards; }
+
+/* Three groups, not per-row nth-child and not inline per-item delays. Two rows
+   in the form are conditional, so nth-child indices shift under people; and six
+   separately-arriving rows read as a list being populated rather than a composed
+   page. g1 carries no delay so the header arrives WITH the panel — a stagger
+   that starts after the container has finished arriving just makes the container
+   look broken for its first 150ms. Total settle 380ms. */
+.inq-g1 { animation: inqGroupIn 240ms cubic-bezier(0.16, 1, 0.3, 1)       backwards; }
+.inq-g2 { animation: inqGroupIn 240ms cubic-bezier(0.16, 1, 0.3, 1)  70ms backwards; }
+.inq-g3 { animation: inqGroupIn 240ms cubic-bezier(0.16, 1, 0.3, 1) 140ms backwards; }
+
+/* Opacity removes nothing from the tab order, so a group still at opacity 0
+   holds fully focusable controls whose focus-visible outline composites at the
+   GROUP's opacity and is therefore invisible too — a WCAG 2.4.7 failure for the
+   duration, most likely for the impatient user who tabs the instant the dialog
+   appears. One rule snaps the group to its resting state the moment focus enters
+   it. Safe because every keyframe here ends at the element's natural style, so
+   cancelling one can never strand anything at opacity 0. */
+.inq-g1:focus-within,
+.inq-g2:focus-within,
+.inq-g3:focus-within { animation: none; }
+
+@keyframes inqScrimIn  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes inqScrimOut { from { opacity: 1 } to { opacity: 0 } }
+@keyframes inqPanelIn  { from { opacity: 0; transform: translateY(12px) }
+                         to   { opacity: 1; transform: translateY(0) } }
+/* Shorter travel out than in: an exit should read as a dismissal, not a
+   rewind. */
+@keyframes inqPanelOut { from { opacity: 1; transform: translateY(0) }
+                         to   { opacity: 0; transform: translateY(6px) } }
+@keyframes inqGroupIn  { from { opacity: 0; transform: translateY(8px) }
+                         to   { opacity: 1; transform: translateY(0) } }
+
+/* 1280x800 at 400% browser zoom is a 320x200 CSS-px viewport (WCAG 1.4.10
+   reflow). Fixed vertical padding leaves roughly 44px of readable content inside
+   the panel's scroller there — about one and a half lines. */
+@media (max-height: 560px) {
+  .inq-scroll  { padding-top: 1rem; }
+  .inq-actions { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  /* The vestibular motion goes; the crossfade stays. An overlay that blinks into
+     existence with no transition at all is harder to notice, not kinder.
+     Crucially the panel still runs a NAMED animation, so animationend still
+     fires and the exit path is byte-identical — no JS branch on the preference
+     anywhere. InquiryModal reads the resolved animation-name at exit time, so
+     these can be renamed freely without touching it. */
+  .inq-panel-in  { animation: inqScrimIn  120ms ease-out backwards; }
+  .inq-panel-out { animation: inqScrimOut 120ms ease-in  forwards; }
+  .inq-g1, .inq-g2, .inq-g3 { animation: none; }
+}
+
+/* forced-colors forces background-color to Canvas, which would delete the 2px
+   bar that is the error state's third non-colour cue (the ! glyph and the
+   semibold text are the other two). System colour keywords are the one thing
+   permitted to override inside this query. The ✕ needs no equivalent because it
+   is an SVG stroked with currentColor, which resolves to CanvasText. */
+@media (forced-colors: active) {
+  .inq-focus-bar { background-color: CanvasText; forced-color-adjust: none; }
+}
+
+/* Chrome paints autofilled fields #E8F0FE with !important and no class can beat
+   it — a blue wash on the two fields most likely to be autofilled, in a strictly
+   monochrome brand. A huge inset shadow is the only override that works, and it
+   is purely cosmetic, so losing it in forced-colors mode costs nothing. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #000000;
+  box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 5000s ease-in-out 0s;
 }

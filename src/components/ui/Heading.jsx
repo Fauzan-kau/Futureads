@@ -4,6 +4,10 @@ const Heading = ({
   size = 'headline',
   className = '',
   weight = 'bold',
+  // Spread, exactly as Button.jsx already does. Without it the `id` that
+  // aria-labelledby points at is silently swallowed and the dialog has no
+  // accessible name — a failure with no console warning and no visual symptom.
+  ...props
 }) => {
   const sizes = {
     display: 'text-display',
@@ -23,7 +27,7 @@ const Heading = ({
   // carries its own letterSpacing, and a utility class would override all of
   // them with a single value.
   return (
-    <Component className={`font-display ${sizes[size]} ${weights[weight]} ${className}`}>
+    <Component className={`font-display ${sizes[size]} ${weights[weight]} ${className}`} {...props}>
       {children}
     </Component>
   )

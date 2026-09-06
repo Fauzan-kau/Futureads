@@ -16,6 +16,17 @@ const navLinks = [
 const navLinkBase =
   'group relative flex items-center text-caption font-medium uppercase tracking-widest transition-colors duration-300 ease-out motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black'
 
+// Same type, tracking, easing and focus ring as navLinkBase — only the colour
+// is split out, exactly as it is on the desktop links, so the two lists cannot
+// drift apart again. No `group`/`relative`: the desktop underline rides the
+// header's own border-b, and this panel's items are separated by
+// divide-y instead, so there is no equivalent rule for a 1px segment to sit on.
+// Colour alone carries the active state here, which is legible precisely
+// because this list only ever renders below 768px, where hover — the one other
+// thing that turns a link black — does not exist.
+const mobileNavLinkBase =
+  'touch-target flex items-center text-caption font-medium uppercase tracking-widest transition-colors duration-300 ease-out motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black'
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   // Derived from navLinks, not a hand-maintained copy: a new nav item would
@@ -39,6 +50,24 @@ const Header = () => {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [isMenuOpen])
 
+  // The panel, its dismiss layer and the toggle are all md:hidden, so crossing
+  // into the desktop band HIDES an open menu without CLOSING it: the toggle
+  // goes on reporting aria-expanded="true", the Escape listener above stays
+  // mounted on document, and coming back under 768px reveals the panel again
+  // with no user action. matchMedia, not a resize listener — it fires once on
+  // the crossing instead of on every intermediate pixel of a drag, and it also
+  // catches an orientation change that never passes through a resize the way a
+  // drag does. 768px is Tailwind's md: the same breakpoint every md:hidden in
+  // this file keys on, so the two can never disagree.
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 768px)')
+    const onChange = (event) => {
+      if (event.matches) setIsMenuOpen(false)
+    }
+    desktop.addEventListener('change', onChange)
+    return () => desktop.removeEventListener('change', onChange)
+  }, [])
+
   return (
     // Opaque, not bg-white/90: the opacity was the bug, not the colour.
     // rgba(255,255,255,.9) over Philosophy's bg-black composites to #E5E5E5 —
@@ -48,7 +77,34 @@ const Header = () => {
     // listener: a bar identical at every scroll position is the whole point.
     // Container, not a bespoke max-w-7xl, so the mark finally sits on the same
     // rail as every heading on the page.
-    <header className="fixed inset-x-0 top-0 z-50 bg-white border-b border-gray-200">
+    //
+    // sticky, NOT fixed. The bar used to ride up and settle half cut off while
+    // scrolling down, and the previous attempt blamed scroll-behavior:smooth,
+    // removed it from globals.css, and left a note here saying layer promotion
+    // had been ruled out. Both claims are wrong: the property has been gone
+    // since then and the bar still detached. Layout was never at fault —
+    // getBoundingClientRect().top read exactly 0 while the INK painted
+    // hundreds of pixels down — and layout-right / pixels-wrong is what a
+    // fixed layer looks like when it is NOT composited and the main thread is
+    // too busy to repaint it at the live scroll offset. Work.jsx was decoding
+    // ~9 megapixels of JPEG synchronously in the section you scroll into; that
+    // is fixed at its source with decoding="async" there.
+    //   sticky            — Chrome offsets sticky on the COMPOSITOR thread in
+    //                       the common case, so the bar no longer rides on
+    //                       main-thread repaint timing at all. It also stays
+    //                       in flow, which is what stops page content passing
+    //                       underneath it without a padding constant that can
+    //                       drift out of sync with h-16 md:h-20 below.
+    //   will-change       — forces its own layer, belt and braces. The trap
+    //                       the old note feared does not exist: the header is
+    //                       a positioned element either way, so the absolute
+    //                       mobile panel and dismiss layer already resolve
+    //                       against it and nothing about them changes.
+    // NO inset-x-0. On a sticky element left/right are sticky CONSTRAINTS in
+    // the inline axis, not layout offsets; a block-level <header> is already
+    // full width, and arming horizontal stickiness only waits for the day
+    // something introduces horizontal scroll.
+    <header className="sticky top-0 z-50 will-change-transform bg-white border-b border-gray-200">
       <Container>
         {/* Do NOT add py-* to this row or to the Container. The nav rule below
             lands on the header's own border-b, which is only true while the
@@ -186,16 +242,25 @@ const Header = () => {
       >
         <Container>
           <nav aria-label="Mobile" className="flex flex-col divide-y divide-gray-200">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={closeMenu}
-                className="touch-target flex items-center text-caption font-medium uppercase tracking-widest text-gray-600 hover:text-black transition-colors duration-300 ease-out motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-black"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              // Same activeId the desktop list reads. It was never wired up
+              // here, so the one nav had two behaviours: the bar told you where
+              // you were and the panel — the ONLY navigation below 768px —
+              // did not. aria-current stays 'true' to match the desktop list
+              // verbatim; if that becomes 'location' it has to change in both.
+              const isActive = activeId === link.id
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={closeMenu}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`${mobileNavLinkBase} ${isActive ? 'text-black' : 'text-gray-600 hover:text-black'}`}
+                >
+                  {link.label}
+                </a>
+              )
+            })}
           </nav>
           {/* py-5, not the old mt-2 (7.5px): the CTA no longer crushes the last
               link. Same Button, variant, size, easing and focus ring as the
