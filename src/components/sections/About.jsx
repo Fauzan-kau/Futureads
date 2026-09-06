@@ -19,21 +19,21 @@ const About = () => {
 
       <Container>
         <Grid cols={2} gap="large" className="items-start">
-          <div className="md:sticky md:top-32">
+          <div className="md:sticky md:top-20">
             <FadeIn>
-              <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
+              <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4">
                 About Us
               </Text>
-              <Heading as="h2" size="headline" className="mb-6 md:mb-8">
+              <Heading as="h2" size="headline" className="mb-4 md:mb-5">
                 We believe in the power of bold ideas
               </Heading>
-              <div className="w-16 h-px bg-black mb-8 md:mb-0" />
+              <div className="w-16 h-px bg-black mb-6 md:mb-0" />
             </FadeIn>
           </div>
 
           <div>
             <FadeIn delay={100}>
-              <Text size="large" color="default" className="mb-8 leading-relaxed">
+              <Text size="large" color="default" className="mb-5 leading-relaxed">
                 FutureAds is a creative advertising agency focused on building
                 brands that stand out. We combine strategic thinking with
                 creative excellence to deliver campaigns that drive real results.
@@ -41,7 +41,7 @@ const About = () => {
             </FadeIn>
 
             <FadeIn delay={150}>
-              <Text color="muted" className="mb-12 leading-relaxed">
+              <Text color="muted" className="mb-8 leading-relaxed">
                 Our approach is simple: understand your audience, craft a
                 compelling message, and deliver it with precision. We don&apos;t
                 follow trends—we set them. Every project is an opportunity to
@@ -50,7 +50,7 @@ const About = () => {
             </FadeIn>
 
             <FadeIn delay={200}>
-              <Text size="caption" color="muted" className="uppercase tracking-wider mb-6">
+              <Text size="caption" color="muted" className="uppercase tracking-wider mb-4">
                 Our Capabilities
               </Text>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

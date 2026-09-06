@@ -70,7 +70,7 @@ const Header = () => {
               key={link.label}
               href={link.href}
               onClick={closeMenu}
-              className="py-2 text-sm font-medium text-gray-700 hover:text-black transition-colors duration-200"
+              className="touch-target flex items-center py-2 text-sm font-medium text-gray-700 hover:text-black transition-colors duration-200"
             >
               {link.label}
             </a>

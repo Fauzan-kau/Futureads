@@ -14,9 +14,9 @@ const Grid = ({
 
   const gapStyles = {
     none: 'gap-0',
-    small: 'gap-4 md:gap-6',
-    default: 'gap-6 md:gap-8',
-    large: 'gap-8 md:gap-12',
+    small: 'gap-3 md:gap-4',
+    default: 'gap-5 md:gap-6',
+    large: 'gap-6 md:gap-8',
   }
 
   return (

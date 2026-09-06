@@ -27,7 +27,7 @@ const principles = [
 
 const Philosophy = () => {
   return (
-    <Section id="philosophy" background="black" padding="large" className="relative overflow-hidden">
+    <Section id="philosophy" background="black" padding="large" className="relative overflow-x-clip">
       {/* Decorative elements - hidden on mobile */}
       <div className="hidden md:block absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-900/50 to-transparent" />
       <div className="hidden md:block absolute bottom-20 right-20 w-64 h-64 border border-gray-800 rounded-full opacity-30" />
@@ -35,16 +35,16 @@ const Philosophy = () => {
 
       <Container className="relative z-10">
         <Grid cols={2} gap="large" className="items-start">
-          <div className="lg:sticky lg:top-32">
+          <div className="md:sticky md:top-20">
             <FadeIn>
-              <Text size="caption" className="uppercase tracking-[0.3em] mb-6 text-gray-500">
+              <Text size="caption" className="uppercase tracking-[0.3em] mb-4 text-gray-500">
                 Our Philosophy
               </Text>
-              <Heading as="h2" size="headline" className="text-white mb-8">
+              <Heading as="h2" size="headline" className="text-white mb-5">
                 We don&apos;t just make ads.
                 <span className="block text-gray-400">We build brands that last.</span>
               </Heading>
-              <div className="w-16 h-px bg-white mb-8" />
+              <div className="w-16 h-px bg-white mb-6" />
               <Text className="text-gray-400 leading-relaxed">
                 Our philosophy is rooted in the belief that great advertising
                 is more than just beautiful visuals—it&apos;s about creating
@@ -54,8 +54,8 @@ const Philosophy = () => {
 
             {/* Large decorative number */}
             <FadeIn delay={200}>
-              <div className="mt-16 hidden lg:block">
-                <span className="text-[8rem] font-bold text-gray-800/30 leading-none">
+              <div className="mt-10 hidden lg:block">
+                <span className="font-display text-[7rem] font-bold text-gray-800/30 leading-none">
                   FA
                 </span>
               </div>
@@ -65,7 +65,7 @@ const Philosophy = () => {
           <div className="space-y-0">
             {principles.map((principle, index) => (
               <FadeIn key={principle.number} delay={index * 100}>
-                <div className="group py-6 md:py-10 border-b border-gray-800 hover:bg-white/5 transition-colors duration-300 px-4 md:px-6 -mx-4 md:-mx-6">
+                <div className="group py-5 md:py-6 border-b border-gray-800 hover:bg-white/5 transition-colors duration-300 px-4 md:px-6 -mx-4 md:-mx-6">
                   <div className="flex items-start gap-4 md:gap-8">
                     <Text size="caption" className="text-gray-600 font-mono mt-1 flex-shrink-0">
                       {principle.number}
@@ -87,11 +87,11 @@ const Philosophy = () => {
 
         {/* Bottom CTA */}
         <FadeIn>
-          <div className="mt-12 md:mt-24 pt-10 md:pt-16 border-t border-gray-800 text-center">
+          <div className="mt-10 md:mt-12 pt-8 md:pt-10 border-t border-gray-800 text-center">
             <Heading as="h3" size="title" className="text-white mb-4">
               Ready to transform your brand?
             </Heading>
-            <Text className="text-gray-400 mb-6 md:mb-8">
+            <Text className="text-gray-400 mb-5 md:mb-6">
               Let&apos;s create something extraordinary together.
             </Text>
             <a

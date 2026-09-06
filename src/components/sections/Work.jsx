@@ -35,7 +35,7 @@ const WorkCard = ({ work, index, isNew = false, baseDelay = 0 }) => {
       onClick={handleImageClick}
       style={animationStyle}
     >
-        <div className="aspect-[4/5] overflow-hidden bg-gray-100 mb-6 relative">
+        <div className="aspect-[4/5] overflow-hidden bg-gray-100 mb-4 relative">
           <img
             src={work.images[currentImage]}
             alt={`${work.client} - ${work.category}`}
@@ -87,14 +87,14 @@ const Work = () => {
   return (
     <Section id="work" padding="large" className="relative overflow-hidden">
       {/* Background text decoration - smaller on mobile */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[30vw] md:text-[20vw] font-bold text-gray-50 select-none pointer-events-none whitespace-nowrap">
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 font-display text-[26vw] md:text-[16vw] font-bold text-gray-50 select-none pointer-events-none whitespace-nowrap">
         WORK
       </div>
 
       <Container className="relative z-10">
         <FadeIn>
-          <div className="mb-10 md:mb-20">
-            <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4 md:mb-6">
+          <div className="mb-8 md:mb-12">
+            <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-3 md:mb-4">
               Selected Work
             </Text>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 md:gap-8">
@@ -113,7 +113,7 @@ const Work = () => {
         </FadeIn>
 
         {/* Masonry-style grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8">
           {works.map((work, index) => {
             const isFeatured = work.featured
             const shouldShow = showAll || isFeatured
@@ -137,7 +137,7 @@ const Work = () => {
 
         {!showAll && works.length > featuredCount && (
           <FadeIn>
-            <div className="mt-10 md:mt-20 text-center">
+            <div className="mt-8 md:mt-12 text-center">
               <Button variant="secondary" size="large" onClick={() => setShowAll(true)}>
                 View All Projects ({works.length - featuredCount} more)
               </Button>
@@ -147,9 +147,9 @@ const Work = () => {
 
         {/* Testimonial/Quote */}
         <FadeIn>
-          <div className="mt-16 md:mt-32 max-w-3xl mx-auto text-center px-4">
-            <div className="text-4xl md:text-6xl text-gray-200 mb-4 md:mb-6">&ldquo;</div>
-            <Text size="large" className="italic mb-6 md:mb-8 leading-relaxed text-base md:text-lg">
+          <div className="mt-12 md:mt-16 max-w-3xl mx-auto text-center px-4">
+            <div className="font-display text-4xl md:text-6xl text-gray-200 mb-3 md:mb-4">&ldquo;</div>
+            <Text size="body" className="italic mb-5 md:mb-6 md:text-body-lg">
               Working with FutureAds transformed our brand presence. Their creative
               approach and attention to detail exceeded our expectations.
             </Text>

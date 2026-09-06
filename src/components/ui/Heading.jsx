@@ -9,7 +9,7 @@ const Heading = ({
     display: 'text-display',
     headline: 'text-headline',
     title: 'text-title',
-    subtitle: 'text-xl md:text-2xl',
+    subtitle: 'text-subtitle',
   }
 
   const weights = {
@@ -19,8 +19,11 @@ const Heading = ({
     bold: 'font-bold',
   }
 
+  // No tracking-* here on purpose: each fontSize token in tailwind.config.js
+  // carries its own letterSpacing, and a utility class would override all of
+  // them with a single value.
   return (
-    <Component className={`${sizes[size]} ${weights[weight]} tracking-tight ${className}`}>
+    <Component className={`font-display ${sizes[size]} ${weights[weight]} ${className}`}>
       {children}
     </Component>
   )

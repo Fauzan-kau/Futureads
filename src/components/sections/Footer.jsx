@@ -23,7 +23,7 @@ const Footer = () => {
     <Section padding="default" background="gray">
       <Container>
         <FadeIn>
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 md:gap-12 mb-12 md:mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 md:gap-8 mb-8 md:mb-10">
             {/* Brand. The mark spells the name itself, so it sits above the
                 copy rather than beside a repeat of it. */}
             <div className="max-w-xs">
@@ -37,9 +37,9 @@ const Footer = () => {
             </div>
 
             {/* Navigation */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               <div>
-                <Text size="caption" color="muted" className="uppercase tracking-wider mb-4">
+                <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                   Navigation
                 </Text>
                 <nav className="flex flex-col gap-3">
@@ -56,7 +56,7 @@ const Footer = () => {
               </div>
 
               <div>
-                <Text size="caption" color="muted" className="uppercase tracking-wider mb-4">
+                <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                   Social
                 </Text>
                 <nav className="flex flex-col gap-3">
@@ -75,7 +75,7 @@ const Footer = () => {
               </div>
 
               <div>
-                <Text size="caption" color="muted" className="uppercase tracking-wider mb-4">
+                <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                   Contact
                 </Text>
                 <div className="space-y-3">
@@ -100,7 +100,7 @@ const Footer = () => {
           </div>
         </FadeIn>
 
-        <Divider className="mb-6 md:mb-8" />
+        <Divider className="mb-5 md:mb-6" />
 
         <FadeIn>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">

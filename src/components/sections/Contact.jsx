@@ -10,21 +10,18 @@ const Contact = () => {
 
   return (
     <Section id="contact" padding="large" className="relative">
-      {/* Background decoration - hidden on mobile */}
-      <div className="hidden md:block absolute top-0 left-0 w-1/3 h-full bg-gray-50" />
-
       <Container className="relative z-10">
         <Grid cols={2} gap="large" className="items-start">
-          <div className="bg-gray-50 p-6 md:p-12 lg:p-16 -mx-6 md:mx-0 md:-ml-6 lg:-ml-12">
+          <div className="relative bg-gray-50 p-6 md:p-8 lg:p-10 -mx-6 md:mx-0 md:-ml-8 lg:-ml-12 md:before:absolute md:before:inset-y-0 md:before:right-full md:before:w-screen md:before:bg-gray-50">
             <FadeIn>
-              <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
+              <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4">
                 Get in Touch
               </Text>
-              <Heading as="h2" size="headline" className="mb-6">
+              <Heading as="h2" size="headline" className="mb-4">
                 Ready to give your brand a future?
               </Heading>
-              <div className="w-16 h-px bg-black mb-8" />
-              <Text size="large" color="muted" className="mb-8 leading-relaxed">
+              <div className="w-16 h-px bg-black mb-6" />
+              <Text size="large" color="muted" className="mb-6 leading-relaxed">
                 Let&apos;s discuss how we can help elevate your brand and create
                 campaigns that make a lasting impact.
               </Text>
@@ -37,7 +34,7 @@ const Contact = () => {
 
             {/* Process steps */}
             <FadeIn delay={200}>
-              <div className="mt-12 space-y-6">
+              <div className="mt-8 space-y-4">
                 <Text size="caption" color="muted" className="uppercase tracking-wider">
                   Our Process
                 </Text>
@@ -61,9 +58,9 @@ const Contact = () => {
             </FadeIn>
           </div>
 
-          <div className="py-8 md:py-12 lg:py-16">
+          <div className="py-2 md:py-4">
             <FadeIn delay={100}>
-              <div className="space-y-8 md:space-y-10">
+              <div className="space-y-6 md:space-y-7">
                 <div className="group">
                   <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                     Email
@@ -109,7 +106,7 @@ const Contact = () => {
                 <Divider />
 
                 <div>
-                  <Text size="caption" color="muted" className="uppercase tracking-wider mb-4">
+                  <Text size="caption" color="muted" className="uppercase tracking-wider mb-3">
                     Follow Us
                   </Text>
                   <div className="flex flex-wrap gap-4 md:gap-6">
@@ -125,7 +122,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="pt-6">
+                <div className="pt-4">
                   {/* A disclosure, not a modal: the panel is the trigger's next
                       DOM sibling, so Tab lands in the first field naturally and
                       no focus trap is needed. It also cannot be a fixed overlay

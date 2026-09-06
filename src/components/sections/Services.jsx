@@ -6,14 +6,14 @@ import services from '../../data/services'
 const ServiceCard = ({ service, index }) => {
   return (
     <FadeIn delay={index * 75}>
-      <div className="group py-10 px-6 border-l-2 border-transparent hover:border-black hover:bg-gray-50 transition-all duration-300">
-        <div className="flex items-start justify-between mb-6">
+      <div className="group py-6 md:py-7 px-5 md:px-6 border-l-2 border-transparent hover:border-black hover:bg-white transition-all duration-300">
+        <div className="flex items-start justify-between mb-4">
           <Text size="caption" color="light" className="font-mono">
             {String(service.id).padStart(2, '0')}
           </Text>
           <div className="w-8 h-px bg-gray-300 group-hover:w-12 group-hover:bg-black transition-all duration-300" />
         </div>
-        <Heading as="h3" size="title" className="mb-4 group-hover:translate-x-2 transition-transform duration-300">
+        <Heading as="h3" size="title" className="mb-3 group-hover:translate-x-2 transition-transform duration-300">
           {service.title}
         </Heading>
         <Text color="muted" className="leading-relaxed">{service.description}</Text>
@@ -30,16 +30,16 @@ const Services = () => {
       <div className="hidden md:block absolute bottom-40 left-20 w-24 h-24 border border-gray-300 rounded-full opacity-30" />
 
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 mb-12 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10 mb-8 md:mb-12">
           <div className="lg:col-span-5">
             <FadeIn>
-              <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-6">
+              <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4">
                 What We Do
               </Text>
-              <Heading as="h2" size="headline" className="mb-6">
+              <Heading as="h2" size="headline" className="mb-4">
                 Services designed to elevate your brand
               </Heading>
-              <div className="w-16 h-px bg-black mb-8" />
+              <div className="w-16 h-px bg-black mb-6" />
               <Text color="muted" className="leading-relaxed">
                 We offer a comprehensive suite of services tailored to meet your
                 brand&apos;s unique needs. From strategy to execution, we&apos;re with
@@ -68,7 +68,7 @@ const Services = () => {
           </div>
         </div>
 
-        <Divider className="mb-8 md:mb-16" />
+        <Divider className="mb-6 md:mb-10" />
 
         <Grid cols={2} gap="large">
           {services.map((service, index) => (

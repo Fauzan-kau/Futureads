@@ -134,9 +134,13 @@
     font-size: 15px;
   }
 
-  /* Ensure buttons have adequate touch targets */
+  /* Real tap targets only. Bare `a[href]` also caught every block and flex
+     text link (footer nav, footer contact, Privacy/Terms, Contact socials),
+     padding each to 44px and leaving ~24px of dead space under the label —
+     a footer nav column 81% taller on mobile than on desktop. */
   button,
-  a[href] {
+  a[href].touch-target,
+  a[href].inline-flex {
     min-height: 44px;
   }
 
