@@ -33,7 +33,7 @@ const About = () => {
 
           <div>
             <FadeIn delay={100}>
-              <Text size="large" color="default" className="mb-5 leading-relaxed">
+              <Text size="large" color="default" className="mb-5">
                 FutureAds is a creative advertising agency focused on building
                 brands that stand out. We combine strategic thinking with
                 creative excellence to deliver campaigns that drive real results.
@@ -41,7 +41,7 @@ const About = () => {
             </FadeIn>
 
             <FadeIn delay={150}>
-              <Text color="muted" className="mb-8 leading-relaxed">
+              <Text color="muted" className="mb-8">
                 Our approach is simple: understand your audience, craft a
                 compelling message, and deliver it with precision. We don&apos;t
                 follow trends—we set them. Every project is an opportunity to

@@ -23,11 +23,10 @@ const FadeIn = ({
 
   const baseStyles = prefersReducedMotion
     // translate(0, 0) rather than 'none': equally motion-free, but it keeps
-    // FadeIn a containing block for EVERY visitor. Hero, Contact and
-    // InquiryPanel all document structural decisions that assume the inline
-    // transform is always there; 'none' would quietly make that assumption
-    // false for reduced-motion users only — the configuration least likely to
-    // be tested.
+    // FadeIn a containing block for EVERY visitor. Hero documents structural
+    // decisions that assume the inline transform is always there; 'none' would
+    // quietly make that assumption false for reduced-motion users only — the
+    // configuration least likely to be tested.
     ? { opacity: 1, transform: 'translate(0, 0)' }
     : {
         opacity: isInView ? 1 : 0,

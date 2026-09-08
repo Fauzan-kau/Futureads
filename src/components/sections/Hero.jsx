@@ -1,6 +1,6 @@
 import { Container, Section } from '../layout'
 import { Heading, Text, Button } from '../ui'
-import { FadeIn } from '../animation'
+import { CountUp, FadeIn } from '../animation'
 
 const Hero = () => {
   return (
@@ -35,23 +35,17 @@ const Hero = () => {
           </FadeIn>
 
           <FadeIn delay={100}>
+            {/* The marker-sweep that used to invert "future" is gone, and with
+                it the .highlight-wipe keyframes in globals.css — the emphasis
+                is now carried by the case change alone, which needs no
+                duplicated word, no aria-hidden copy under a black bar and no
+                animation to arrive before the line reads correctly.
+                tracking is set on the fontSize token (text-display), so the
+                uppercase run gets no tracking-* utility here: a utility would
+                override the token for the whole heading. */}
             <Heading as="h1" size="display" className="mb-6">
               Give your brand
-              <span className="block">
-                a{' '}
-                <span className="relative inline-block whitespace-nowrap">
-                  <span className="relative">future</span>
-                  {/* Marker sweep: wipes a black bar across the word, inverting it to white */}
-                  <span
-                    aria-hidden="true"
-                    className="highlight-wipe absolute inset-x-[-0.1em] inset-y-[-0.08em] bg-black"
-                  >
-                    <span className="absolute left-[0.1em] top-[0.08em] text-white">
-                      future
-                    </span>
-                  </span>
-                </span>
-              </span>
+              <span className="block">a FUTURE</span>
             </Heading>
           </FadeIn>
 
@@ -60,7 +54,7 @@ const Hero = () => {
           </FadeIn>
 
           <FadeIn delay={300}>
-            <Text size="large" color="muted" className="max-w-xl mb-8 leading-relaxed">
+            <Text size="large" color="muted" className="max-w-xl mb-8">
               We craft bold, impactful campaigns that transform how audiences
               perceive and connect with your brand. Strategy meets creativity.
             </Text>
@@ -77,43 +71,72 @@ const Hero = () => {
             </div>
           </FadeIn>
 
+          {/* The figures count up rather than sitting there. delay 600 is this
+              FadeIn's own 500 plus one rung of the ladder above, so the count
+              starts 100ms INTO the row's fade, not after it — the row is at
+              ~28% opacity then, dim enough that "0+" is not read as a claim.
+              Both clocks are IntersectionObservers on the same subtree and the
+              spec delivers every pending observation in one step at the end of
+              the same frame, so they start together rather than approximately.
+              600 + CountUp's 700 lands the settle on 1300ms, the same frame the
+              scroll indicator below finishes arriving: one settle for the hero,
+              not two.
+              One shared delay on purpose. The three stats are one statement
+              divided by hairlines, not a list like Work or Services, so they
+              move in lockstep — the easing alone already lands them ~1056 /
+              1230 / 1253ms, which is all the stagger a spec row wants.
+              grid-cols-3 is repeat(3, minmax(0, 1fr)) — a ZERO minimum — so
+              widening digits can never pull a track and the border-l dividers
+              hold still no matter what the numbers do. */}
           <FadeIn delay={500}>
             <div className="mt-10 md:mt-12 grid grid-cols-3 gap-4 md:gap-8 lg:gap-10">
               <div className="text-center md:text-left">
                 <Text size="caption" color="light" className="uppercase tracking-wider mb-1">
                   Projects
                 </Text>
-                <Heading as="span" size="title" weight="bold">50+</Heading>
+                <Heading as="span" size="title" weight="bold">
+                  <CountUp to={50} suffix="+" delay={600} />
+                </Heading>
               </div>
               <div className="text-center md:text-left border-l border-gray-200 pl-4 md:pl-8">
                 <Text size="caption" color="light" className="uppercase tracking-wider mb-1">
                   Clients
                 </Text>
-                <Heading as="span" size="title" weight="bold">25+</Heading>
+                <Heading as="span" size="title" weight="bold">
+                  <CountUp to={25} suffix="+" delay={600} />
+                </Heading>
               </div>
               <div className="text-center md:text-left border-l border-gray-200 pl-4 md:pl-8">
                 <Text size="caption" color="light" className="uppercase tracking-wider mb-1">
                   Years
                 </Text>
-                <Heading as="span" size="title" weight="bold">3+</Heading>
+                <Heading as="span" size="title" weight="bold">
+                  <CountUp to={3} suffix="+" delay={600} />
+                </Heading>
               </div>
             </div>
           </FadeIn>
         </div>
       </Container>
 
-      {/* Scroll indicator - hidden on mobile. The absolute positioning has to
-          live on a plain wrapper: FadeIn always writes an inline transform, so
-          IT would become the containing block and park this at the right edge
-          of the hero's flex row, mid-height, instead of bottom-centre. */}
+      {/* Scroll indicator - hidden on mobile, and wordless: the rule alone says
+          "there is more below" without labelling the gesture. The absolute
+          positioning still has to live on a plain wrapper even now that there
+          is a single child: FadeIn always writes an inline transform, so IT
+          would become the containing block and park this at the right edge of
+          the hero's flex row, mid-height, instead of bottom-centre. That is the
+          only reason this div exists — do not fold it into the FadeIn.
+          Position is unchanged by dropping the word: -translate-x-1/2 is a
+          percentage of the element's OWN width, so a 1px-wide wrapper is still
+          centred on 50%, and bottom-10 anchors the bottom edge the rule already
+          sat on. motion-reduce:animate-none is new — the pulse was unguarded
+          before, and it is now the only thing moving in this corner. */}
       <div className="hidden md:block absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
         <FadeIn delay={700}>
-          <div className="flex flex-col items-center gap-2">
-            <Text size="caption" color="light" className="uppercase tracking-widest text-xs">
-              Scroll
-            </Text>
-            <div className="w-px h-8 bg-gray-300 animate-pulse" />
-          </div>
+          <div
+            aria-hidden="true"
+            className="w-px h-8 bg-gray-300 animate-pulse motion-reduce:animate-none"
+          />
         </FadeIn>
       </div>
     </Section>

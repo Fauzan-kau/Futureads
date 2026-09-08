@@ -1,39 +1,33 @@
 import { Heading, Text } from '../ui'
 
 /* Exported so the four content states and the boundary fallback cannot drift.
-   Miss it on one heading and the dialog loses its accessible name only after the
-   state machine advances — i.e. only in the flows least likely to be manually
-   tested, with no console warning. */
+   Miss it on one heading and the form loses the accessible name its status
+   region points at, only after the state machine advances — i.e. only in the
+   flows least likely to be manually tested, with no console warning. */
 export const TITLE_ID = 'inquiry-title'
 
-/* One header, rendered ABOVE the branch switch and never inside it, so the panel
-   reads as one object changing its contents rather than as a new dialog: on the
+/* One header, rendered ABOVE the branch switch and never inside it, so the card
+   reads as one object changing its contents rather than as a new panel: on the
    only path this deployment actually takes (no endpoint -> always 'manual') the
    swap is instantaneous, and a header that blanked and re-cascaded would give
    the user ~700ms of "did anything happen?" straight after their click.
-   The eyebrow / headline / w-16 hairline block is Contact.jsx:17-23's motif
-   verbatim. It is deliberately NOT split into a chrome bar above a rule: that
-   turns an editorial eyebrow into an OS window title, spends the site's loudest
-   tracking tier on chrome, and costs ~60px at the top of a panel that has none
-   to spare.
-   pr-14 sm:pr-16 reserves the 44px ✕ so a long headline can never run under it. */
+   The eyebrow / headline / w-16 hairline block is the motif the Contact column
+   beside it uses verbatim, which is what makes the card read as part of the
+   section rather than as an embedded widget.
+   The pr-14 that used to sit here reserved room for the dialog's ✕. The form is
+   inline now — there is no close button and nothing to clear. */
 const PanelHeader = ({ eyebrow, title, size = 'title', lede, note }) => (
-  <header className="inq-g1 pr-14 sm:pr-16">
+  <header>
     <Text size="caption" color="muted" className="uppercase tracking-[0.3em] mb-4">
       {eyebrow}
     </Text>
 
-    {/* h2, not h3: aria-modal takes the dialog out of the page outline, so this
-        is a top-level heading in its own context.
-        Deliberately NOT a tabIndex={-1} focus target. It carries the dialog's
-        accessible name via aria-labelledby, and focusing it after a branch swap
-        made Chrome match :focus-visible and paint its default ring — a black
-        rectangle spanning the full panel width around the headline, two lines
-        above a readonly textarea with an almost identical box. The post-swap
-        focus goes to the dialog container instead (see the effect in
-        InquiryPanel): same re-announcement, since the container's name IS this
-        heading, and no ring, since no engine matches :focus-visible on a
-        programmatically focused container.
+    {/* h2, not h3: this is a top-level heading in the Contact section, a peer of
+        the column heading beside it.
+        Deliberately NOT the focus target after a status swap — the wrapper in
+        InquiryForm is, because focusing the h2 itself made Chrome match
+        :focus-visible and paint a full-width black rectangle around the
+        headline. The wrapper's accessible name is this heading either way.
         No tracking-* class: text-title and text-subtitle carry their own
         letterSpacing on the fontSize token. */}
     <Heading as="h2" size={size} id={TITLE_ID} className="mb-4">
@@ -42,7 +36,7 @@ const PanelHeader = ({ eyebrow, title, size = 'title', lede, note }) => (
 
     <div aria-hidden="true" className="w-16 h-px bg-black mb-6" />
 
-    {lede && <Text color="muted" className="leading-relaxed">{lede}</Text>}
+    {lede && <Text color="muted">{lede}</Text>}
     {/* An HTTP status is a diagnostic, not a headline. It never goes in the h2. */}
     {note && <Text size="caption" color="light" className="mt-2">{note}</Text>}
   </header>

@@ -1,3 +1,6 @@
+import allenHabour from '../assets/allen_habour.jpeg'
+import thoppilPortrait from '../assets/thoppil_jewellery2.jpeg'
+import thoppilWide from '../assets/thoppil_jewellery.jpeg'
 import kaziKitchen1 from '../assets/Kazi_kitchen.jpeg'
 import kaziKitchen2 from '../assets/Kazi_kitchen2.jpeg'
 import kaziKitchen3 from '../assets/Kazi_kitchen3.jpeg'
@@ -14,7 +17,33 @@ import bocaJnrs from '../assets/boca_jnrs.jpeg'
 import arackalTraders from '../assets/arackal_traders.jpeg'
 import unique from '../assets/unique.jpeg'
 
+/* Order IS the reading order of the grid, and `featured` is what the section
+   shows before "View All Projects" is pressed — so the most recent work goes at
+   the TOP of this array with featured: true. Work.jsx computes its reveal delays
+   as `index - featuredCount`, which only lines up while every featured entry
+   sits contiguously at the front of the list; keep new featured work here rather
+   than flagging something further down.
+
+   Cover image first inside `images`: the card crops to aspect-[4/5] with
+   object-cover, so a landscape creative loses its edges as a cover and is better
+   placed second, where the click-through shows it in the same box. */
 const works = [
+  {
+    id: 9,
+    client: 'Allen Habour',
+    category: 'Eye Care & Retail',
+    description: 'Vision Onam — festive offer campaign for the eye hospital and eyewear chain',
+    images: [allenHabour],
+    featured: true,
+  },
+  {
+    id: 10,
+    client: 'Thoppil Jewellery',
+    category: 'Jewellery & Retail',
+    description: 'Ponnaninja Ponnonam — Onam campaign for the gold and diamond collections',
+    images: [thoppilPortrait, thoppilWide],
+    featured: true,
+  },
   {
     id: 1,
     client: 'Kazi Kitchen',
@@ -45,7 +74,9 @@ const works = [
     category: 'Retail',
     description: 'Brand refresh and promotional campaign',
     images: [amiyas1, amiyas2],
-    featured: false,
+    // Six featured, not five. The grid is 3-up at lg and 2-up at sm, and five
+    // cards leave a hole in the last row at both — six divides evenly into each.
+    featured: true,
   },
   {
     id: 5,

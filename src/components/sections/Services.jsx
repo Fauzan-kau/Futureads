@@ -16,7 +16,7 @@ const ServiceCard = ({ service, index }) => {
         <Heading as="h3" size="title" className="mb-3 group-hover:translate-x-2 transition-transform duration-300">
           {service.title}
         </Heading>
-        <Text color="muted" className="leading-relaxed">{service.description}</Text>
+        <Text color="muted">{service.description}</Text>
       </div>
     </FadeIn>
   )
@@ -40,7 +40,7 @@ const Services = () => {
                 Services designed to elevate your brand
               </Heading>
               <div className="w-16 h-px bg-black mb-6" />
-              <Text color="muted" className="leading-relaxed">
+              <Text color="muted">
                 We offer a comprehensive suite of services tailored to meet your
                 brand&apos;s unique needs. From strategy to execution, we&apos;re with
                 you every step of the way.

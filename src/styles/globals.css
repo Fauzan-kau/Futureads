@@ -24,10 +24,12 @@
      the masthead is now position:sticky and layer-promoted (see the note on
      Header.jsx's <header>), and those decodes are now async.
      So this property is free to come back — it is not forbidden and it is not
-     load-bearing. One coupling to honour first: InquiryModal.jsx restores the
-     page scroll on close with a bare window.scrollTo(), which would start
-     animating the moment this is set, swooping the page under a closing
-     dialog. Give that call an explicit instant behaviour in the same change. */
+     load-bearing. The one coupling this note used to warn about is gone with
+     the code that owned it: InquiryModal.jsx restored the page scroll on close
+     with a bare window.scrollTo(), which would have started animating the
+     moment this was set. There is no dialog and no scroll lock any more — the
+     inquiry form is part of the Contact section — so nothing in the codebase
+     now calls window.scrollTo at all. */
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -60,6 +62,16 @@
     @apply bg-white text-black font-sans;
     margin: 0;
     padding: 0;
+    /* DM Sans is served as a variable font with an optical-size axis (see the
+       note on the font <link> in index.html). auto lets the browser pick the
+       instance for the rendered size, which is what stops 14px captions and
+       19px lede paragraphs from being the same drawing scaled.
+       kern/liga/calt are on by default in every current engine; they are named
+       here because -webkit-font-smoothing: antialiased above already opts this
+       page out of the platform defaults, and a font-feature-settings declared
+       anywhere else would otherwise reset them to off. */
+    font-optical-sizing: auto;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
 
   ::selection {
@@ -110,27 +122,6 @@
     to {
       opacity: 1;
       transform: translateY(0);
-    }
-  }
-
-  /* Hero marker highlight - sweeps a black bar across a word, inverting it */
-  .highlight-wipe {
-    clip-path: inset(0 0 0 0);
-    animation: highlightWipe 650ms cubic-bezier(0.65, 0, 0.35, 1) 700ms both;
-  }
-
-  @keyframes highlightWipe {
-    from {
-      clip-path: inset(0 100% 0 0);
-    }
-    to {
-      clip-path: inset(0 0 0 0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .highlight-wipe {
-      animation: none;
     }
   }
 
@@ -185,111 +176,36 @@
    optional politeness — because a full-page nav traversal is the one motion
    Header.jsx and Footer.jsx actually own.
    Reduced-motion coverage for everything else is unchanged and still real:
-   .highlight-wipe is guarded above, each transition in Header.jsx and
-   Footer.jsx carries motion-reduce:transition-none, and FadeIn.jsx checks
-   matchMedia directly. Deliberately still NOT the site-wide
+   every transition in Header.jsx, Contact.jsx and Footer.jsx carries
+   motion-reduce:transition-none, and FadeIn.jsx checks matchMedia directly.
+   Two things this paragraph used to name are gone rather than unguarded:
+   .highlight-wipe, with the hero's marker sweep — the word FUTURE carries its
+   emphasis in the case now, not in an animated bar — and the inquiry dialog's
+   entrance animations, with the dialog itself (see the block below).
+   Deliberately still NOT the site-wide
    `* { transition-duration: 0.01ms !important }` sledgehammer — that would
    nullify every hover affordance in six other sections. */
 
-/* ── Project inquiry dialog ──────────────────────────────────────────────────
+/* ── Project inquiry form ────────────────────────────────────────────────────
+   What used to live here was the dialog: a fixed full-viewport layer, a scrim
+   crossfade, a panel entrance, three staggered content groups and a
+   reduced-motion block neutralising all of it. The form is part of the Contact
+   section now — it never opens, never closes and never overlays anything — so
+   every one of those rules described an element that no longer renders. They
+   are deleted rather than commented out; the entrance the card does have is
+   FadeIn's, shared with every other block on the page.
+   The two rules below are what survives, and neither belonged to the dialog:
+   both are control-level fixes owned by Field.jsx and the inputs themselves.
    Plain CSS at the end of the file, deliberately NOT inside @layer utilities:
    Tailwind v3 tree-shakes custom classes declared in a layer when its extractor
-   does not find the candidate, and every one of these is applied through a
-   template literal. Sitting after the Tailwind output also makes the cascade
-   deterministic instead of emission-order dependent.
-   Applied as CLASSES, never inline styles, so the reduced-motion block below can
-   neutralise them — the same arrangement .highlight-wipe already uses, and
-   deliberately not the `* { transition-duration: .01ms !important }` sledgehammer
-   the note above this block explains at length why it rejects. ---------------- */
-
-/* height, NOT `inset: 0`. `bottom: 0` on a fixed element resolves against iOS
-   Safari's LARGE viewport, so the last ~50-90px of a full-height overlay sits
-   behind the bottom toolbar with nothing to scroll — the panel's bottom edge and
-   its action row land under browser chrome. svh is the SMALL viewport and is
-   therefore never clipped: the same unit and the same reason as Hero.jsx:7's
-   min-h-[100svh]. Two declarations of one property in ONE rule, so an engine
-   that cannot parse svh keeps the vh fallback and there is no emission-order
-   coin flip between two arbitrary Tailwind utilities.
-   The panel inside carries max-h-full, which resolves against THIS box minus its
-   own padding — so the cap tracks p-4/sm:p-6 automatically and there is no
-   hard-coded `calc(100dvh - 2rem)` to drift out of sync with it. */
-.inq-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-}
-
-.inq-scrim-in  { animation: inqScrimIn  200ms ease-out backwards; }
-.inq-scrim-out { animation: inqScrimOut 180ms ease-in  forwards; }
-
-/* No scale, on purpose. The panel's only structural boundary is a 1px black
-   border; a composited scale renders that at 0.98px as an antialiased grey that
-   snaps hard on the final frame, which is the tell that makes an entrance read
-   cheap. A 12px rise is also the site's only existing entrance vocabulary —
-   @keyframes fadeIn above and FadeIn.jsx's distance=10 are the whole set. */
-.inq-panel-in  { animation: inqPanelIn  260ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
-.inq-panel-out { animation: inqPanelOut 160ms cubic-bezier(0.4, 0, 1, 1) forwards; }
-
-/* Three groups, not per-row nth-child and not inline per-item delays. Two rows
-   in the form are conditional, so nth-child indices shift under people; and six
-   separately-arriving rows read as a list being populated rather than a composed
-   page. g1 carries no delay so the header arrives WITH the panel — a stagger
-   that starts after the container has finished arriving just makes the container
-   look broken for its first 150ms. Total settle 380ms. */
-.inq-g1 { animation: inqGroupIn 240ms cubic-bezier(0.16, 1, 0.3, 1)       backwards; }
-.inq-g2 { animation: inqGroupIn 240ms cubic-bezier(0.16, 1, 0.3, 1)  70ms backwards; }
-.inq-g3 { animation: inqGroupIn 240ms cubic-bezier(0.16, 1, 0.3, 1) 140ms backwards; }
-
-/* Opacity removes nothing from the tab order, so a group still at opacity 0
-   holds fully focusable controls whose focus-visible outline composites at the
-   GROUP's opacity and is therefore invisible too — a WCAG 2.4.7 failure for the
-   duration, most likely for the impatient user who tabs the instant the dialog
-   appears. One rule snaps the group to its resting state the moment focus enters
-   it. Safe because every keyframe here ends at the element's natural style, so
-   cancelling one can never strand anything at opacity 0. */
-.inq-g1:focus-within,
-.inq-g2:focus-within,
-.inq-g3:focus-within { animation: none; }
-
-@keyframes inqScrimIn  { from { opacity: 0 } to { opacity: 1 } }
-@keyframes inqScrimOut { from { opacity: 1 } to { opacity: 0 } }
-@keyframes inqPanelIn  { from { opacity: 0; transform: translateY(12px) }
-                         to   { opacity: 1; transform: translateY(0) } }
-/* Shorter travel out than in: an exit should read as a dismissal, not a
-   rewind. */
-@keyframes inqPanelOut { from { opacity: 1; transform: translateY(0) }
-                         to   { opacity: 0; transform: translateY(6px) } }
-@keyframes inqGroupIn  { from { opacity: 0; transform: translateY(8px) }
-                         to   { opacity: 1; transform: translateY(0) } }
-
-/* 1280x800 at 400% browser zoom is a 320x200 CSS-px viewport (WCAG 1.4.10
-   reflow). Fixed vertical padding leaves roughly 44px of readable content inside
-   the panel's scroller there — about one and a half lines. */
-@media (max-height: 560px) {
-  .inq-scroll  { padding-top: 1rem; }
-  .inq-actions { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /* The vestibular motion goes; the crossfade stays. An overlay that blinks into
-     existence with no transition at all is harder to notice, not kinder.
-     Crucially the panel still runs a NAMED animation, so animationend still
-     fires and the exit path is byte-identical — no JS branch on the preference
-     anywhere. InquiryModal reads the resolved animation-name at exit time, so
-     these can be renamed freely without touching it. */
-  .inq-panel-in  { animation: inqScrimIn  120ms ease-out backwards; }
-  .inq-panel-out { animation: inqScrimOut 120ms ease-in  forwards; }
-  .inq-g1, .inq-g2, .inq-g3 { animation: none; }
-}
+   does not find the candidate, and .inq-focus-bar is applied through a template
+   literal. Sitting after the Tailwind output also makes the cascade
+   deterministic instead of emission-order dependent. -------------------------- */
 
 /* forced-colors forces background-color to Canvas, which would delete the 2px
    bar that is the error state's third non-colour cue (the ! glyph and the
    semibold text are the other two). System colour keywords are the one thing
-   permitted to override inside this query. The ✕ needs no equivalent because it
-   is an SVG stroked with currentColor, which resolves to CanvasText. */
+   permitted to override inside this query. */
 @media (forced-colors: active) {
   .inq-focus-bar { background-color: CanvasText; forced-color-adjust: none; }
 }

@@ -45,7 +45,7 @@ const Philosophy = () => {
                 <span className="block text-gray-400">We build brands that last.</span>
               </Heading>
               <div className="w-16 h-px bg-white mb-6" />
-              <Text className="text-gray-400 leading-relaxed">
+              <Text className="text-gray-400">
                 Our philosophy is rooted in the belief that great advertising
                 is more than just beautiful visuals—it&apos;s about creating
                 meaningful connections that drive real business results.
@@ -74,7 +74,7 @@ const Philosophy = () => {
                       <Heading as="h3" size="title" className="text-white mb-2 md:mb-4 group-hover:translate-x-2 transition-transform duration-300">
                         {principle.title}
                       </Heading>
-                      <Text className="text-gray-400 leading-relaxed text-sm md:text-base">
+                      <Text className="text-gray-400">
                         {principle.description}
                       </Text>
                     </div>

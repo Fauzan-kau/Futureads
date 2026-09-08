@@ -119,7 +119,7 @@ const Work = () => {
                 </Heading>
                 <div className="w-16 h-px bg-black" />
               </div>
-              <Text color="muted" className="max-w-md text-sm md:text-base">
+              <Text color="muted" className="max-w-md">
                 Click on any project to browse through the creative assets.
                 Each piece tells a story of collaboration and creativity.
               </Text>

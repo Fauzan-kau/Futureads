@@ -5,7 +5,7 @@
  * the inquiry form would have made a sixth. Change it here and it changes everywhere.
  */
 export const CONTACT = {
-  email: 'hello@futureads.agency',
+  email: 'futureads00@gmail.com',
   phone: '+91 98765 43210',
   phoneE164: '+919876543210',
   location: 'Kerala, India',

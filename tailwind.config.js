@@ -7,7 +7,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        // Content face. DM Sans over Inter: it shares Space Grotesk's geometric
+        // skeleton, so body copy supports the titles instead of sitting beside
+        // them in a second voice. Inter stays as the first fallback — it is the
+        // closest metric match, so a blocked webfont degrades without reflow.
+        sans: ['DM Sans', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         // Titles only. Space Grotesk tops out at 700, which matches the
         // heaviest weight Heading.jsx asks for — no synthesised bold.
         display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
@@ -20,9 +24,15 @@ export default {
         'headline': ['clamp(1.875rem, 4vw, 3.25rem)', { lineHeight: '1.05', letterSpacing: '-0.025em' }],
         'title': ['clamp(1.375rem, 2.5vw, 2rem)', { lineHeight: '1.15', letterSpacing: '-0.015em' }],
         'subtitle': ['clamp(1.25rem, 1.6vw, 1.5rem)', { lineHeight: '1.3', letterSpacing: '-0.01em' }],
-        'body-lg': ['1.25rem', { lineHeight: '1.6' }],
-        'body': ['1rem', { lineHeight: '1.6' }],
-        'caption': ['0.875rem', { lineHeight: '1.5' }],
+        // Content sizes carry letterSpacing and line-height on the token for the
+        // same reason the display sizes do — set once here, never as a utility
+        // that would silently outrank the token. DM Sans sets slightly wider
+        // than Inter at the same size, so a touch of negative tracking restores
+        // an even colour, and the longer line-heights give a 65-75 character
+        // measure the leading it actually needs.
+        'body-lg': ['1.1875rem', { lineHeight: '1.65', letterSpacing: '-0.011em' }],
+        'body': ['1.0625rem', { lineHeight: '1.7', letterSpacing: '-0.006em' }],
+        'caption': ['0.875rem', { lineHeight: '1.6', letterSpacing: '0.001em' }],
       },
       spacing: {
         'section': 'clamp(3rem, 7vh, 4.5rem)',
